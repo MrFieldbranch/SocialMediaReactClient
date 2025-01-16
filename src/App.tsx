@@ -1,5 +1,5 @@
 
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css'
 import StartView from './views/start-view/StartView';
 import LoginView from './views/login-view/LoginView';
@@ -18,11 +18,23 @@ import FriendRequestsFromMeView from './views/friend-requests-from-me-view/Frien
 import MyInterestsView from './views/my-interests-view/MyInterestsView';
 import InterestsIDontHaveView from './views/interests-i-dont-have-view/InterestsIDontHaveView';
 import Header from './components/header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
+import { SocialMediaApiService } from './services/social-media-api-service';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  const socialMediaApiService = new SocialMediaApiService("https://localhost:8000");
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+        socialMediaApiService.setAuthorizationHeader(token);
+        setIsLoggedIn(true);
+        navigate('/myprofile');        }
+}, []);
 
   return (
     <>
