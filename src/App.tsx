@@ -19,6 +19,7 @@ import MyInterestsView from './views/my-interests-view/MyInterestsView';
 import InterestsIDontHaveView from './views/interests-i-dont-have-view/InterestsIDontHaveView';
 import Header from './components/header/Header';
 import { useState } from 'react';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,23 +31,23 @@ const App = () => {
         <Route path="/" element={<Navigate to="/start" />} />
         <Route path='/start' element={<StartView />} />
         <Route path='/login' element={<LoginView setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path='registernewuser' element={<RegisterNewUserView setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path='myprofile' element={<MyProfileView />} />
-        <Route path='myfriends' element={<MyFriendsView />} />
-        <Route path='user' element={<UserView />} />
-        <Route path='conversation' element={<ConversationView />} />
-        <Route path='strangers' element={<StrangersView />}>
-          <Route path='sorted' element={<StrangersSortedView />} />
+        <Route path='/registernewuser' element={<RegisterNewUserView setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/myprofile" element={<PrivateRoute isLoggedIn={isLoggedIn}><MyProfileView /></PrivateRoute>} />
+        <Route path="/myfriends" element={<PrivateRoute isLoggedIn={isLoggedIn}><MyFriendsView /></PrivateRoute>} />
+        <Route path="/user" element={<PrivateRoute isLoggedIn={isLoggedIn}><UserView /></PrivateRoute>} />
+        <Route path="/conversation" element={<PrivateRoute isLoggedIn={isLoggedIn}><ConversationView /></PrivateRoute>} />
+        <Route path="/strangers" element={<PrivateRoute isLoggedIn={isLoggedIn}><StrangersView /></PrivateRoute>}>
+          <Route path='sorted' element={<PrivateRoute isLoggedIn={isLoggedIn}><StrangersSortedView /></PrivateRoute>} />
         </Route>
-        <Route path='friendrequests' element={<AllFriendRequestsView />}>
-          <Route path='tome' element={<FriendRequestsToMeView />} />
-          <Route path='fromme' element={<FriendRequestsFromMeView />} />
+        <Route path='/friendrequests' element={<PrivateRoute isLoggedIn={isLoggedIn}><AllFriendRequestsView /></PrivateRoute>}>
+          <Route path='tome' element={<PrivateRoute isLoggedIn={isLoggedIn}><FriendRequestsToMeView /></PrivateRoute>} />
+          <Route path='fromme' element={<PrivateRoute isLoggedIn={isLoggedIn}><FriendRequestsFromMeView /></PrivateRoute>} />
         </Route>
-        <Route path='interests' element={<AllInterestsView />}>
-          <Route path='myinterests' element={<MyInterestsView />} />
-          <Route path='notmyinterests' element={<InterestsIDontHaveView />} />
+        <Route path='/interests' element={<PrivateRoute isLoggedIn={isLoggedIn}><AllInterestsView /></PrivateRoute>}>
+          <Route path='myinterests' element={<PrivateRoute isLoggedIn={isLoggedIn}><MyInterestsView /></PrivateRoute>} />
+          <Route path='notmyinterests' element={<PrivateRoute isLoggedIn={isLoggedIn}><InterestsIDontHaveView /></PrivateRoute>} />
         </Route>
-        <Route path='publicboard' element={<PublicBoardView />} />
+        <Route path="/publicboard" element={<PrivateRoute isLoggedIn={isLoggedIn}><PublicBoardView /></PrivateRoute>} />
       </Routes>
     </>
   );
