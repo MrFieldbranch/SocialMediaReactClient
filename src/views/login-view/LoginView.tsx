@@ -1,16 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import './LoginView.css';
 import { useState } from 'react';
-import { SocialMediaApiService } from '../../services/social-media-api-service';
 import { ILoginRequest } from '../../models/ILoginRequest';
+import socialMediaApiService from '../../services/social-media-api-service';   /* Singleton */
 
 const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
-
-    const socialMediaApiService = new SocialMediaApiService("https://localhost:8000");
+    
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,7 +17,8 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
         try {
             const loginRequest: ILoginRequest = { email, password };
             const loginResponse = await socialMediaApiService.loginAsync(loginRequest);
-            socialMediaApiService.setAuthorizationHeader(loginResponse.token);
+            localStorage.setItem("authToken", loginResponse.token);
+            socialMediaApiService.setAuthorizationHeader(loginResponse.token);            
             setIsLoggedIn(true);
             navigate('/myprofile');
         } catch (error: any) {
@@ -28,7 +28,7 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
 
     return (
         <>
-            <h1>Logga in</h1>
+            <h1>LOGGA IN</h1>
             <form onSubmit={handleLogin}>
                 <div>
                     <label htmlFor="email">Email:</label>

@@ -20,13 +20,11 @@ import InterestsIDontHaveView from './views/interests-i-dont-have-view/Interests
 import Header from './components/header/Header';
 import { useEffect, useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
-import { SocialMediaApiService } from './services/social-media-api-service';
+import socialMediaApiService from './services/social-media-api-service';   /* Singleton */
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
-
-  const socialMediaApiService = new SocialMediaApiService("https://localhost:8000");
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
