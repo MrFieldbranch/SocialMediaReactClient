@@ -3,10 +3,12 @@ import './MyProfileView.css';
 import { Sex } from '../../enums/sex';
 import { IInterestResponse } from '../../models/IInterestResponse';
 import socialMediaApiService from '../../services/social-media-api-service';  /* Singleton */
+import SubMenu from '../../components/sub-menu/SubMenu';
+import Modal from '../../components/modal/Modal';
+import { IUpdatePersonalInfoRequest } from '../../models/IUpdatePersonalInfoRequest';
 
 const MyProfileView = () => {
-
-    /* const [id, setId] = useState<number>(0); */
+    
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -16,38 +18,66 @@ const MyProfileView = () => {
     const [sex, setSex] = useState<Sex>(Sex.Male);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [interests, setInterests] = useState<IInterestResponse[]>([]);
-    
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     useEffect(() => {
+        let isMounted = true;        
+
         const fetchProfile = async () => {
             try {
                 const profileData = await socialMediaApiService.getMyselfAsync();
-                /* setId(profileData.id); */
-                setFirstName(profileData.firstName);
-                setLastName(profileData.lastName);
-                setEmail(profileData.email);
-                setPersonalInfo(profileData.personalInfo);
-                setDateOfBirth(profileData.dateOfBirth);
-                setAge(profileData.age);
-                setSex(profileData.sex);
-                setInterests(profileData.interests);
+                if (isMounted) {
+                    setFirstName(profileData.firstName);
+                    setLastName(profileData.lastName);
+                    setEmail(profileData.email);
+                    setPersonalInfo(profileData.personalInfo);
+                    setDateOfBirth(profileData.dateOfBirth);
+                    setAge(profileData.age);
+                    setSex(profileData.sex === 0 ? Sex.Male : Sex.Female);
+                    setInterests(profileData.interests);                    
+                }
+
             } catch (error: any) {
-                setErrorMessage(error.message || "An unknown error occurred.");
+                if (isMounted) {
+                    setErrorMessage(error.message || "An unknown error occurred.");
+                }
             }
         };
 
         fetchProfile();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
+    const handleEditPersonalInfo = () => {
+        setIsModalOpen(true);
+    };
 
-
+    const handleSavePersonalInfo = async (text: string) => {
+        const updatedPersonalInfo = text.trim() === "" ? null : text;
+        const request: IUpdatePersonalInfoRequest = {
+            personalInfo: updatedPersonalInfo
+        };
+        try {
+            socialMediaApiService.updatePersonalInfoAsync(request);
+            setPersonalInfo(updatedPersonalInfo);
+        } catch (error) {
+            console.error("Error saving personal info", error);
+        } finally {
+            setIsModalOpen(false);
+        }
+    };
 
     return (
         <>
             <h1>MIN PROFIL</h1>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            
-            <p>{firstName} {lastName}, ({sex})</p>
+            <SubMenu items={[{ label: "Skriv om dig själv", onClick: handleEditPersonalInfo }]} />
+
+            <p>{firstName} {lastName}, ({sex === Sex.Male ? "Man" : "Kvinna"})</p>
             <p>Email:</p>
             <p>{email}</p>
             <p>Födelsedatum:</p>
@@ -69,6 +99,12 @@ const MyProfileView = () => {
                 <p>{personalInfo}</p>
             )}
 
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSavePersonalInfo}
+                initialValue={personalInfo || ""}
+            />
         </>
     );
 };

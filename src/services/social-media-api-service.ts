@@ -26,8 +26,7 @@ export class SocialMediaApiService {
         this.requestHeaders = {
             ...this.requestHeaders, 
             Authorization: `Bearer ${token}`, 
-        };
-        console.log(this.requestHeaders);
+        };        
     }
 
     /* removeAuthorizationHeader(): void {
@@ -37,14 +36,13 @@ export class SocialMediaApiService {
     removeAuthorizationHeader(): void {
         console.clear();
         const { Authorization, ...rest } = this.requestHeaders; // Destructure to exclude Authorization
-        this.requestHeaders = rest; // Reassign to exclude the Authorization header
-        console.log(this.requestHeaders); // Optional: Log the updated httpClient for debugging
+        this.requestHeaders = rest; // Reassign to exclude the Authorization header        
     }
 
     async registerNewUser(newUserRequest: INewUserRequest): Promise<void> {
         const response = await fetch(`${this.baseUrl}/registration`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(newUserRequest),
         });
 
@@ -57,7 +55,7 @@ export class SocialMediaApiService {
     async loginAsync(loginRequest: ILoginRequest): Promise<ILoginResponse> {
         const response = await fetch(`${this.baseUrl}/login`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(loginRequest),
         });
 
@@ -78,7 +76,7 @@ export class SocialMediaApiService {
     async getAllInterestsAsync(): Promise<IInterestResponse[]> {
         const response = await fetch(`${this.baseUrl}/interest`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -93,7 +91,7 @@ export class SocialMediaApiService {
     async getMyInterestsAsync(): Promise<IInterestResponse[]> {
         const response = await fetch(`${this.baseUrl}/interest/myowninterests`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -108,7 +106,7 @@ export class SocialMediaApiService {
     async getInterestsNotOwnedByMeAsync(): Promise<IInterestResponse[]> {
         const response = await fetch(`${this.baseUrl}/interest/interestsnotownedbyme`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -123,7 +121,7 @@ export class SocialMediaApiService {
     async getMyFriendsAsync(): Promise<IBasicUserResponse[]> {
         const response = await fetch(`${this.baseUrl}/user/myfriends`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -138,7 +136,7 @@ export class SocialMediaApiService {
     async getStrangersAsync(): Promise<IBasicUserResponse[]> {
         const response = await fetch(`${this.baseUrl}/user/strangers`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -153,7 +151,7 @@ export class SocialMediaApiService {
     async getStrangersBasedOnInterestsAsync(): Promise<IUserWithSharedInterestsResponse[]> {
         const response = await fetch(`${this.baseUrl}/user/getstrangersbasedoninterests`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -168,7 +166,7 @@ export class SocialMediaApiService {
     async getUsersWithPendingFriendRequestsToMeAsync(): Promise<IPendingFriendResponse[]> {
         const response = await fetch(`${this.baseUrl}/friendrequest/allpendingtome`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -183,7 +181,7 @@ export class SocialMediaApiService {
     async getUsersWithPendingFriendRequestsFromMeAsync(): Promise<IPendingFriendResponse[]> {
         const response = await fetch(`${this.baseUrl}/friendrequest/allpendingfromme`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -198,7 +196,7 @@ export class SocialMediaApiService {
     async createNewInterestAsync(interestRequest: IInterestRequest): Promise<IInterestResponse> {
         const response = await fetch(`${this.baseUrl}/interest`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(interestRequest),
         });
 
@@ -219,7 +217,7 @@ export class SocialMediaApiService {
     async createNewPostToPublicBoardAsync(postRequest: IPostToPublicBoardRequest): Promise<void> {
         const response = await fetch(`${this.baseUrl}/posttopublicboard`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(postRequest),
         });
 
@@ -232,7 +230,7 @@ export class SocialMediaApiService {
     async addInterestToMyselfAsync(interestId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/interest/${interestId}`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -244,7 +242,7 @@ export class SocialMediaApiService {
     async removeInterestFromMyselfAsync(interestId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/interest/${interestId}`, {
             method: "DELETE",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -256,7 +254,7 @@ export class SocialMediaApiService {
     async sendFriendRequestAsync(otherUserId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/friendrequest/${otherUserId}`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -268,7 +266,7 @@ export class SocialMediaApiService {
     async acceptFriendRequestAsync(otherUserId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/friendrequest/acceptrequest/${otherUserId}`, {
             method: "PUT",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -280,7 +278,7 @@ export class SocialMediaApiService {
     async declineFriendRequestAsync(otherUserId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/friendrequest/declinerequest/${otherUserId}`, {
             method: "DELETE",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -292,7 +290,7 @@ export class SocialMediaApiService {
     async withdrawFriendRequestAsync(otherUserId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/friendrequest/withdrawrequest/${otherUserId}`, {
             method: "DELETE",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -304,7 +302,7 @@ export class SocialMediaApiService {
     async endFriendshipAsync(otherUserId: number): Promise<void> {
         const response = await fetch(`${this.baseUrl}/friendrequest/cancelfriendship/${otherUserId}`, {
             method: "DELETE",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -316,7 +314,7 @@ export class SocialMediaApiService {
     async getConversationAsync(otherUserId: number): Promise<IConversationResponse> {
         const response = await fetch(`${this.baseUrl}/conversation/${otherUserId}`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -336,7 +334,7 @@ export class SocialMediaApiService {
     async sendMessageAsync(otherUserId: number, message: IMessageRequest): Promise<void> {
         const response = await fetch(`${this.baseUrl}/message/${otherUserId}`, {
             method: "POST",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(message),
         });
 
@@ -349,7 +347,7 @@ export class SocialMediaApiService {
     async getAllPostsAsync(): Promise<IPostToPublicBoardResponse[]> {
         const response = await fetch(`${this.baseUrl}/posttopublicboard`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -361,11 +359,9 @@ export class SocialMediaApiService {
         return allPosts || []    // Return an empty array if the response is null or undefined        
     }
 
-    async getMyselfAsync(): Promise<IDetailedUserResponse> {
-        console.log(this.requestHeaders);
+    async getMyselfAsync(): Promise<IDetailedUserResponse> {        
         const response = await fetch(`${this.baseUrl}/user/getmyowndata`, {
-            method: "GET",
-            /* headers: new Headers(this.httpClient), */
+            method: "GET",            
             headers: {...this.requestHeaders},
         });
 
@@ -386,7 +382,7 @@ export class SocialMediaApiService {
     async getOtherUserAsync(otherUserId: number): Promise<IDetailedUserResponse> {
         const response = await fetch(`${this.baseUrl}/user/${otherUserId}`, {
             method: "GET",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
         });
 
         if (!response.ok) {
@@ -406,7 +402,7 @@ export class SocialMediaApiService {
     async updatePersonalInfoAsync(request: IUpdatePersonalInfoRequest): Promise<void> {
         const response = await fetch(`${this.baseUrl}/personalinfo`, {
             method: "PUT",
-            headers: this.requestHeaders,
+            headers: {...this.requestHeaders},
             body: JSON.stringify(request),
         });
 
