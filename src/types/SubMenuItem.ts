@@ -1,5 +1,6 @@
 export type SubMenuItem = {
         label: string;
-        onClick?: () => void;   /* Optional for actions */
-        linkTo?: string;        /* Optional for navigation */
+        onClick?: () => void;   
+        linkTo?: string;        
+		optionalProps?: Record<string, string>;
 }

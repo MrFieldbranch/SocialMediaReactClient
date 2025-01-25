@@ -1,8 +1,8 @@
 export enum TypeOfUser {
-    Default = "Default",
-    Me = "Me",
-    Friend = "Friend",
-    Stranger = "Stranger",
-    UserThatSentFriendRequestToMe = "UserThatSentFriendRequestToMe",
-    UserThatISentFriendRequestTo = "UserThatISentFriendRequestTo",
+    Default,
+    Me,
+    Friend,
+    Stranger,
+    UserThatSentFriendRequestToMe,
+    UserThatISentFriendRequestTo,
 }

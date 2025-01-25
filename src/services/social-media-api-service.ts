@@ -311,24 +311,28 @@ export class SocialMediaApiService {
         }
     }
 
-    async getConversationAsync(otherUserId: number): Promise<IConversationResponse> {
+    async getConversationAsync(otherUserId: number): Promise<IConversationResponse | null> {
         const response = await fetch(`${this.baseUrl}/conversation/${otherUserId}`, {
             method: "GET",
             headers: {...this.requestHeaders},
         });
 
+		if (response.status === 404){
+			return null;
+		}
         if (!response.ok) {
             const errorMessage = await response.text();
             throw new Error(`Failed to fetch conversation: ${errorMessage || "No error message provided by the server."}`);
         }
 
-        const conversation: IConversationResponse | null = await response.json();
+		return await response.json();
+        /* const conversation: IConversationResponse | null = await response.json();
 
         if (!conversation) {
             throw new Error("Failed to deserialize conversation data.");
         }
 
-        return conversation;
+        return conversation; */
     }
 
     async sendMessageAsync(otherUserId: number, message: IMessageRequest): Promise<void> {
