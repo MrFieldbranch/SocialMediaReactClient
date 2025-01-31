@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { IModalProps } from "../../types/IModalProps";
-import "./Modal.css";
+import "./PersonalInfoModal.css";
 
-const Modal = ({ isOpen, onClose, onSave, initialValue }: IModalProps) => {
+const PersonalInfoModal = ({ isOpen, onClose, onSaveOrSend: onSave, initialValue }: IModalProps) => {
       const [text, setText] = useState(initialValue);
 
       useEffect(() => {
@@ -30,4 +30,4 @@ const Modal = ({ isOpen, onClose, onSave, initialValue }: IModalProps) => {
       );
 };
 
-export default Modal;
+export default PersonalInfoModal;

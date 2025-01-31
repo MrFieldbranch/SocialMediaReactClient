@@ -4,7 +4,7 @@ import { Sex } from '../../enums/sex';
 import { IInterestResponse } from '../../models/IInterestResponse';
 import socialMediaApiService from '../../services/social-media-api-service';  /* Singleton */
 import SubMenu from '../../components/sub-menu/SubMenu';
-import Modal from '../../components/modal/Modal';
+import PersonalInfoModal from '../../components/personal-info-modal/PersonalInfoModal';
 import { IUpdatePersonalInfoRequest } from '../../models/IUpdatePersonalInfoRequest';
 
 const MyProfileView = () => {
@@ -98,10 +98,10 @@ const MyProfileView = () => {
 				<p>{personalInfo}</p>
 			)}
 
-			<Modal
+			<PersonalInfoModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
-				onSave={handleSavePersonalInfo}
+				onSaveOrSend={handleSavePersonalInfo}
 				initialValue={personalInfo || ""}
 			/>
 		</>
