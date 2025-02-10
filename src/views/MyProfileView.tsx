@@ -2,116 +2,106 @@ import { useEffect, useState } from "react";
 import { Sex } from "../enums/sex";
 import { IInterestResponse } from "../models/IInterestResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
-import SubMenu from "../components/SubMenu";
-import PersonalInfoModal from "../components/PersonalInfoModal";
+import { IDetailedUserResponse } from "../models/IDetailedUserResponse";
 import { IUpdatePersonalInfoRequest } from "../models/IUpdatePersonalInfoRequest";
 
 const MyProfileView = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [personalInfo, setPersonalInfo] = useState<string | null>(null);
-  const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
-  const [age, setAge] = useState<number>(0);
-  const [sex, setSex] = useState<Sex>(Sex.Male);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [interests, setInterests] = useState<IInterestResponse[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [myUser, setMyUser] = useState<IDetailedUserResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [newText, setNewText] = useState<string>("");
 
   useEffect(() => {
-    let isMounted = true;
+    const abortCont = new AbortController();
 
-    const fetchProfile = async () => {
+    const fetchMyUser = async () => {
       try {
-        const profileData = await socialMediaApiService.getMyselfAsync();
-        if (isMounted) {
-          setFirstName(profileData.firstName);
-          setLastName(profileData.lastName);
-          setEmail(profileData.email);
-          setPersonalInfo(profileData.personalInfo);
-          setDateOfBirth(profileData.dateOfBirth);
-          setAge(profileData.age);
-          setSex(profileData.sex === 0 ? Sex.Male : Sex.Female);
-          setInterests(profileData.interests);
+        const response = await socialMediaApiService.getMyselfAsync(abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          setMyUser(response);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
-    fetchProfile();
+    fetchMyUser();
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    return () => abortCont.abort();
+  }, [isEditMode]);
 
-  const handleEditPersonalInfo = () => {
-    setIsModalOpen(true);
-  };
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
-  const handleSavePersonalInfo = async (text: string) => {
-    const updatedPersonalInfo = text.trim() === "" ? null : text;
-    const request: IUpdatePersonalInfoRequest = {
-      personalInfo: updatedPersonalInfo,
-    };
-    try {
-      socialMediaApiService.updatePersonalInfoAsync(request);
-      setPersonalInfo(updatedPersonalInfo);
-    } catch (error) {
-      console.error("Error saving personal info", error);
-    } finally {
-      setIsModalOpen(false);
-    }
+  if (!myUser) {
+    return <p>Laddar din profil...</p>;
+  }
+
+  const handleSavePersonalInfo = async (newText: string) => {
+	const updatedPersonalInfo = newText.trim() === "" ? null : newText;
+	const request: IUpdatePersonalInfoRequest = {
+		personalInfo: updatedPersonalInfo
+	};
+	try {
+		await socialMediaApiService.updatePersonalInfoAsync(request);
+	} catch (err: any) {
+		setError(err.message || "An unknown error occurred.");
+	} finally {
+		setIsEditMode(false);
+	}
   };
 
   return (
     <div className="my-profile-view">
       <h1>MIN PROFIL</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <SubMenu
-        items={[
-          { label: "Skriv om dig själv", onClick: handleEditPersonalInfo },
-        ]}
-      />
-
       <p>
-        {firstName} {lastName}, ({sex === Sex.Male ? "Man" : "Kvinna"})
+        {myUser.firstName} {myUser.lastName}, ({myUser.sex === Sex.Male ? "Man" : "Kvinna"})
       </p>
       <p>Email:</p>
-      <p>{email}</p>
+      <p>{myUser.email}</p>
       <p>Födelsedatum:</p>
       <p>
-        {new Date(dateOfBirth).toLocaleDateString("sv-SE")}, ({age}) år
+        {new Date(myUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({myUser.age}) år
       </p>
       <p>Mina intressen:</p>
-      {interests.length === 0 ? (
+      {myUser.interests.length === 0 ? (
         <p>Inga intressen tillagda än.</p>
       ) : (
         <p>
-          {interests.map((interest) => (
-            <span key={interest.id}>{interest.name} </span>
+          {myUser.interests.map((interest: IInterestResponse) => (
+            <span key={interest.id}>{interest.name}</span>
           ))}
         </p>
       )}
       <p>Om mig:</p>
-      {personalInfo === null ? (
-        <p>
-          Inget skrivet än. Gör gärna det om du vill berätta mer om dig själv.
-          Endast dina vänner kan se vad som står här.
-        </p>
-      ) : (
-        <p>{personalInfo}</p>
-      )}
 
-      <PersonalInfoModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSaveOrSend={handleSavePersonalInfo}
-        initialValue={personalInfo || ""}
-      />
+      {!isEditMode && (
+        <div>
+          {myUser.personalInfo === null ? (
+            <p>Inget skrivet än. Gör gärna det om du vill berätta mer om dig själv. 
+			   Endast dina vänner kan se vad som står här.</p>
+          ) : (
+            <p>{myUser.personalInfo}</p>
+          )}
+          <button onClick={() => setIsEditMode(true)}>Redigera</button>
+        </div>
+      )}
+      {isEditMode && (
+        <div>
+          <textarea 
+		  	value={newText} 
+			rows={5} 
+			onChange={(e) => setNewText(e.target.value)} 
+		  />
+		  <div>
+			<button onClick={() => handleSavePersonalInfo(newText)}>Spara</button>
+			<button onClick={() => setIsEditMode(false)}>Avbryt</button>
+		  </div>
+        </div>
+      )}      
     </div>
   );
 };

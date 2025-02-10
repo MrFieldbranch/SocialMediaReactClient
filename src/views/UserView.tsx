@@ -7,6 +7,7 @@ import { IBasicUserResponse } from "../models/IBasicUserResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
 import BasicUser from "../components/BasicUser";
 import SubMenu from "../components/SubMenu";
+import { IDetailedUserResponse } from "../models/IDetailedUserResponse";
 
 const UserView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
@@ -14,68 +15,53 @@ const UserView = () => {
 
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [typeOfUser, setTypeOfUser] = useState<TypeOfUser>(TypeOfUser.Default);
-  const [personalInfo, setPersonalInfo] = useState<string | null>(null);
-  const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
-  const [age, setAge] = useState<number>(0);
-  const [sex, setSex] = useState<Sex>(Sex.Male);
-  const [friends, setFriends] = useState<IBasicUserResponse[]>([]);
-  const [interests, setInterests] = useState<IInterestResponse[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [otherUser, setOtherUser] = useState<IDetailedUserResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+	const abortCont = new AbortController();
 
-    const fetchProfile = async () => {
-      try {
-        const profileData = await socialMediaApiService.getOtherUserAsync(
-          otherUserId
-        );
-        if (isMounted) {
-          setFirstName(profileData.firstName);
-          setLastName(profileData.lastName);
-          setEmail(profileData.email);
-          setTypeOfUser(
-            /* Using a mapping object */
-            {
-              0: TypeOfUser.Default,
-              1: TypeOfUser.Me,
-              2: TypeOfUser.Friend,
-              3: TypeOfUser.Stranger,
-              4: TypeOfUser.UserThatSentFriendRequestToMe,
-              5: TypeOfUser.UserThatISentFriendRequestTo,
-            }[profileData.typeOfUser] || TypeOfUser.Default
-          );
-          if (typeOfUser === TypeOfUser.Friend) {
-            setPersonalInfo(profileData.personalInfo);
-          }
-          setDateOfBirth(profileData.dateOfBirth);
-          setAge(profileData.age);
-          setSex(profileData.sex === 0 ? Sex.Male : Sex.Female);
-          setFriends(profileData.friends);
-          setInterests(profileData.interests);
-        }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
-        }
-      }
-    };
+	const fetchOtherUser = async () => {
+		try {
+			const response = await socialMediaApiService.getOtherUserAsync(otherUserId, abortCont.signal);
+			if (!abortCont.signal.aborted) {
+				const mappedTypeOfUser = {
+					0: TypeOfUser.Default,
+					1: TypeOfUser.Me,
+					2: TypeOfUser.Friend,
+					3: TypeOfUser.Stranger,
+					4: TypeOfUser.UserThatSentFriendRequestToMe,
+					5: TypeOfUser.UserThatISentFriendRequestTo,
+				}[response.typeOfUser] || TypeOfUser.Default;
 
-    fetchProfile();
+				setOtherUser({ 
+					...response, 
+					typeOfUser: mappedTypeOfUser,
+					sex: response.sex === 0 ? Sex.Male : Sex.Female,
+				 });
+			}
+		} catch (err: any) {
+			if (err.name !== "AbortError") {
+				setError(err.message || "An unknown error occurred.");
+			}
+		}
+	};
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+	fetchOtherUser();
 
-  const renderCorrectSubMenu = (
-    typeOfUser: TypeOfUser
-  ): React.ReactElement | null => {
+	return () => abortCont.abort();
+  }, [id]);
+
+  if (error) 
+    return <p className="error-message">{error}</p>;  
+
+  if (!otherUser) 
+    return <p>Laddar profilen...</p>;
+
+  const renderCorrectSubMenu = (typeOfUser: TypeOfUser): React.ReactElement | null => {
     if (typeOfUser === TypeOfUser.Friend) {
+		const firstName = otherUser.firstName;
+		const lastName = otherUser.lastName;
       return (
         <SubMenu
           items={[
@@ -137,8 +123,8 @@ const UserView = () => {
     try {
       await socialMediaApiService.endFriendshipAsync(otherUserId);
       navigate("/myfriends");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
 
@@ -146,8 +132,8 @@ const UserView = () => {
     try {
       await socialMediaApiService.sendFriendRequestAsync(otherUserId);
       navigate("/friendrequests");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
 
@@ -155,8 +141,8 @@ const UserView = () => {
     try {
       await socialMediaApiService.acceptFriendRequestAsync(otherUserId);
       navigate("/myfriends");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
 
@@ -164,8 +150,8 @@ const UserView = () => {
     try {
       await socialMediaApiService.declineFriendRequestAsync(otherUserId);
       navigate("/friendrequests");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
 
@@ -173,67 +159,118 @@ const UserView = () => {
     try {
       await socialMediaApiService.withdrawFriendRequestAsync(otherUserId);
       navigate("/friendrequests");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
 
   const getUserDescription = (typeOfUser: TypeOfUser): string => {
-    if (typeOfUser === TypeOfUser.Friend) return "VÄN";
-    else if (typeOfUser === TypeOfUser.Stranger) return "INTE VÄN";
-    else if (typeOfUser === TypeOfUser.UserThatSentFriendRequestToMe)
-      return "HAR SKICKAT VÄNFÖRFRÅGAN TILL DIG";
-    else if (typeOfUser === TypeOfUser.UserThatISentFriendRequestTo)
-      return "HAR FÅTT EN VÄNFÖRFRÅGAN FRÅN DIG";
-    else return "OKÄND STATUS";
+    if (typeOfUser === TypeOfUser.Friend) 
+		return "VÄN";
+    else if (typeOfUser === TypeOfUser.Stranger) 
+		return "INTE VÄN";
+    else if (typeOfUser === TypeOfUser.UserThatSentFriendRequestToMe) 
+		return "HAR SKICKAT VÄNFÖRFRÅGAN TILL DIG";
+    else if (typeOfUser === TypeOfUser.UserThatISentFriendRequestTo) 
+		return "HAR FÅTT EN VÄNFÖRFRÅGAN FRÅN DIG";
+    else 
+		return "OKÄND STATUS";
   };
+
+  
+  
 
   return (
     <div className="user-view">
+      {renderCorrectSubMenu(otherUser.typeOfUser)}
       <h1>ANVÄNDARPROFIL</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {renderCorrectSubMenu(typeOfUser)}
+
       <p>
-        {firstName} {lastName}, ({sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
-        {getUserDescription(typeOfUser)}
+        {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}), {getUserDescription(otherUser.typeOfUser)}
       </p>
       <p>Email:</p>
-      <p>{email}</p>
+      <p>{otherUser.email}</p>
       <p>Födelsedatum:</p>
       <p>
-        {new Date(dateOfBirth).toLocaleDateString("sv-SE")}, ({age}) år
+        {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age}) år
       </p>
       <p>Intressen:</p>
-      {interests.length === 0 ? (
+      {otherUser.interests.length === 0 ? (
         <p>Inga intressen tillagda än.</p>
       ) : (
         <p>
-          {interests.map((interest) => (
+          {otherUser.interests.map((interest: IInterestResponse) => (
             <span key={interest.id}>{interest.name} </span>
           ))}
         </p>
       )}
       <p>Om personen:</p>
-      {typeOfUser !== TypeOfUser.Friend ? (
-        <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
-      ) : (
-        <p>{personalInfo}</p>
-      )}
+      {otherUser.typeOfUser !== TypeOfUser.Friend ? 
+	  	<p>Du är inte vän med denna person så du kan inte se detta stycke.</p> : 
+		<p>{otherUser.personalInfo}</p>}
       <p>Personens vänner:</p>
-      {friends.length === 0 ? (
+      {otherUser.friends.length === 0 ? (
         <p>Inga vänner</p>
       ) : (
-        friends.map((friend) => (
-          <BasicUser
-            key={friend.id}
-            id={friend.id}
-            firstName={friend.firstName}
-            lastName={friend.lastName}
-          />
-        ))
+        otherUser.friends.map((friend: IBasicUserResponse) => <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />)
       )}
     </div>
   );
 };
 
 export default UserView;
+
+
+/* const [firstName, setFirstName] = useState<string>("");
+const [lastName, setLastName] = useState<string>("");
+const [email, setEmail] = useState<string>("");
+const [typeOfUser, setTypeOfUser] = useState<TypeOfUser>(TypeOfUser.Default);
+const [personalInfo, setPersonalInfo] = useState<string | null>(null);
+const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
+const [age, setAge] = useState<number>(0);
+const [sex, setSex] = useState<Sex>(Sex.Male);
+const [friends, setFriends] = useState<IBasicUserResponse[]>([]);
+const [interests, setInterests] = useState<IInterestResponse[]>([]);
+
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchProfile = async () => {
+    try {
+      const profileData = await socialMediaApiService.getOtherUserAsync(otherUserId);
+      if (isMounted) {
+        setFirstName(profileData.firstName);
+        setLastName(profileData.lastName);
+        setEmail(profileData.email);
+        setTypeOfUser(          
+          {
+            0: TypeOfUser.Default,
+            1: TypeOfUser.Me,
+            2: TypeOfUser.Friend,
+            3: TypeOfUser.Stranger,
+            4: TypeOfUser.UserThatSentFriendRequestToMe,
+            5: TypeOfUser.UserThatISentFriendRequestTo,
+          }[profileData.typeOfUser] || TypeOfUser.Default
+        );
+        if (typeOfUser === TypeOfUser.Friend) {
+          setPersonalInfo(profileData.personalInfo);
+        }
+        setDateOfBirth(profileData.dateOfBirth);
+        setAge(profileData.age);
+        setSex(profileData.sex === 0 ? Sex.Male : Sex.Female);
+        setFriends(profileData.friends);
+        setInterests(profileData.interests);
+      }
+    } catch (error: any) {
+      if (isMounted) {
+        setErrorMessage(error.message || "An unknown error occurred.");
+      }
+    }
+  };
+
+  fetchProfile();
+
+  return () => {
+    isMounted = false;
+  };
+}, []); */

@@ -5,81 +5,87 @@ import socialMediaApiService from "../services/social-media-api-service"; /* Sin
 
 const AllFriendRequestsView = () => {
   const [pendingToMe, setPendingToMe] = useState<IPendingFriendResponse[]>([]);
-  const [pendingFromMe, setPendingFromMe] = useState<IPendingFriendResponse[]>(
-    []
-  );
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [pendingFromMe, setPendingFromMe] = useState<IPendingFriendResponse[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    const abortCont = new AbortController();
 
-    const fetchData = async () => {
+    const fetchFriendRequests = async () => {
       try {
         const [toMe, fromMe] = await Promise.all([
           socialMediaApiService.getUsersWithPendingFriendRequestsToMeAsync(),
           socialMediaApiService.getUsersWithPendingFriendRequestsFromMeAsync(),
         ]);
-
-        if (isMounted) {
+        if (!abortCont.signal.aborted) {
           setPendingToMe(toMe);
           setPendingFromMe(fromMe);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
-    fetchData();
+    fetchFriendRequests();
 
-    return () => {
-      isMounted = false;
-    };
+    return () => abortCont.abort();
   }, []);
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="all-friend-requests-view">
       <h1>VÄNFÖRFRÅGNINGAR</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
       <section className="friend-requests-section">
         <h2>{`Till mig (${pendingToMe.length})`}</h2>
-        <div className="separate-data">
-          <p>Namn</p>
-          <p>Skickat</p>
-        </div>
+
         {pendingToMe.length === 0 ? (
           <p>Det finns inga aktuella vänförfrågningar till dig</p>
         ) : (
-          pendingToMe.map((user) => (
-            <BasicUserFriendRequest
-              key={user.id}
-              id={user.id}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              requestedAt={user.requestedAt}
-            />
-          ))
+          <>
+            <div className="separate-data">
+              <p>Namn</p>
+              <p>Skickat</p>
+            </div>
+            {pendingToMe.map((user: IPendingFriendResponse) => (
+              <BasicUserFriendRequest
+                key={user.id}
+                id={user.id}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                requestedAt={user.requestedAt}
+              />
+            ))}
+          </>
         )}
       </section>
+
       <section className="friend-requests-section">
         <h2>{`Som jag har skickat (${pendingFromMe.length})`}</h2>
-        <div className="separate-data">
-          <p>Namn</p>
-          <p>Skickat</p>
-        </div>
+
         {pendingFromMe.length === 0 ? (
           <p>Det finns inga aktuella vänförfrågningar från dig</p>
         ) : (
-          pendingFromMe.map((user) => (
-            <BasicUserFriendRequest
-              key={user.id}
-              id={user.id}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              requestedAt={user.requestedAt}
-            />
-          ))
+          <>
+            <div className="separate-data">
+              <p>Namn</p>
+              <p>Skickat</p>
+            </div>
+            {pendingFromMe.map((user: IPendingFriendResponse) => (
+              <BasicUserFriendRequest
+                key={user.id}
+                id={user.id}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                requestedAt={user.requestedAt}
+              />
+            ))}
+          </>
         )}
       </section>
     </div>

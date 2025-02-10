@@ -6,36 +6,37 @@ import SubMenu from "../components/SubMenu";
 
 const StrangersView = () => {
   const [strangers, setStrangers] = useState<IBasicUserResponse[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    const abortCont = new AbortController();
 
     const fetchStrangers = async () => {
       try {
-        const strangersFromApi =
-          await socialMediaApiService.getStrangersAsync();
-        if (isMounted) {
-          setStrangers(strangersFromApi);
+        const response = await socialMediaApiService.getStrangersAsync(abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          setStrangers(response);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
     fetchStrangers();
 
-    return () => {
-      isMounted = false;
-    };
+    return () => abortCont.abort();
   }, []);
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  
 
   return (
     <div className="strangers-view">
-      <h1>MÖJLIGA VÄNNER</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <SubMenu
         items={[
           {
@@ -44,21 +45,17 @@ const StrangersView = () => {
           },
         ]}
       />
+      <h1>MÖJLIGA VÄNNER</h1>
+
       {strangers.length === 0 ? (
-        <p>
-          Det finns inga användare i communityn som inte redan är i din
-          vänlista, eller som inte redan ingår i en vänförfrågan.
-        </p>
+        <p>Det finns inga användare i communityn som inte redan är i din vänlista, 
+			eller som inte redan ingår i en vänförfrågan.</p>
       ) : (
-        strangers.map((stranger) => (
-          <BasicUser
-            key={stranger.id}
-            id={stranger.id}
-            firstName={stranger.firstName}
-            lastName={stranger.lastName}
-          />
+        strangers.map((stranger: IBasicUserResponse) => (
+          <BasicUser key={stranger.id} id={stranger.id} firstName={stranger.firstName} lastName={stranger.lastName} />
         ))
       )}
+
     </div>
   );
 };

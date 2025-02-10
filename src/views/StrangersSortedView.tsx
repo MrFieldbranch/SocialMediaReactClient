@@ -6,62 +6,55 @@ import { IUserWithSharedInterestsResponse } from "../models/IUserWithSharedInter
 
 const StrangersSortedView = () => {
   const [strangersSorted, setStrangersSorted] = useState<IUserWithSharedInterestsResponse[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = false;
+    const abortCont = new AbortController();
 
     const fetchStrangersSorted = async () => {
       try {
-        const strangersSortedFromApi =
-          await socialMediaApiService.getStrangersBasedOnInterestsAsync();
-        if (isMounted) {
-          setStrangersSorted(strangersSortedFromApi);
+        const response = await socialMediaApiService.getStrangersBasedOnInterestsAsync(abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          setStrangersSorted(response);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
     fetchStrangersSorted();
 
-    return () => {
-      isMounted = false;
-    };
+    return () => abortCont.abort();
   }, []);
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="strangers-sorted-view">
-      <h1>
-        MÖJLIGA VÄNNER (sorterade efter antal gemensamma intressen med dig)
-      </h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <SubMenu
-        items={[
-          { label: "Gå tillbaka till osorterad vy", linkTo: "/strangers" },
-        ]}
-      />
-      <div className="separate-data">
-        <p>Namn</p>
-        <p>Antal gemensamma intressen</p>
-      </div>
+      <SubMenu items={[{ label: "Gå tillbaka till osorterad vy", linkTo: "/strangers" }]} />
+      <h1>MÖJLIGA VÄNNER (sorterade efter antal gemensamma intressen med dig)</h1>
       {strangersSorted.length === 0 ? (
-        <p>
-          Det finns inga andra användare som har något intresse gemensamt med
-          dig
-        </p>
+        <p>Det finns inga andra användare som har något intresse gemensamt med dig</p>
       ) : (
-        strangersSorted.map((stranger) => (
-          <BasicUserSharedInterests
-            key={stranger.id}
-            id={stranger.id}
-            firstName={stranger.firstName}
-            lastName={stranger.lastName}
-            sharedInterestsCount={stranger.sharedInterestsCount}
-          />
-        ))
+        <>
+          <div className="separate-data">
+            <p>Namn</p>
+            <p>Antal gemensamma intressen</p>
+          </div>
+          {strangersSorted.map((stranger: IUserWithSharedInterestsResponse) => (
+            <BasicUserSharedInterests
+              key={stranger.id}
+              id={stranger.id}
+              firstName={stranger.firstName}
+              lastName={stranger.lastName}
+              sharedInterestsCount={stranger.sharedInterestsCount}
+            />
+          ))}
+        </>
       )}
     </div>
   );

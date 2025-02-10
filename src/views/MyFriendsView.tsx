@@ -5,49 +5,47 @@ import socialMediaApiService from "../services/social-media-api-service"; /* Sin
 
 const MyFriendsView = () => {
   const [friends, setFriends] = useState<IBasicUserResponse[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    const abortCont = new AbortController();
 
     const fetchFriends = async () => {
       try {
-        const friendsFromApi = await socialMediaApiService.getMyFriendsAsync();
-        if (isMounted) {
-          setFriends(friendsFromApi);
+        const response = await socialMediaApiService.getMyFriendsAsync(abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          setFriends(response);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
-    fetchFriends();
+	fetchFriends();
 
-    return () => {
-      isMounted = false;
-    };
+	return () => abortCont.abort();
   }, []);
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="my-friends-view">
       <h1>MINA VÄNNER</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      
       {friends.length === 0 ? (
-        <p>
-          Du har inga vänner än. Gå till "Möjliga vänner" och skicka
-          vänförfrågningar.
-        </p>
+        <p>Du har inga vänner än. Gå till "Möjliga vänner" och skicka vänförfrågningar.</p>
       ) : (
-        friends.map((friend) => (
-          <BasicUser
-            key={friend.id}
-            id={friend.id}
-            firstName={friend.firstName}
-            lastName={friend.lastName}
-          />
-        ))
+        friends.map((friend: IBasicUserResponse) => 
+			<BasicUser	
+				key={friend.id} 
+				id={friend.id} 
+				firstName={friend.firstName} 
+				lastName={friend.lastName} 
+			/>)
       )}
     </div>
   );

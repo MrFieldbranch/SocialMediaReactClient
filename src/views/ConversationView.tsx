@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { IConversationResponse } from "../models/IConversationResponse";
-import { IMessageResponse } from "../models/IMessageResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
-import SubMenu from "../components/SubMenu";
-import PrivateMessageModal from "../components/PrivateMessageModal";
 import { IMessageRequest } from "../models/IMessageRequest";
+import { IMessageResponse } from "../models/IMessageResponse";
 
 const ConversationView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
@@ -14,68 +12,57 @@ const ConversationView = () => {
   const location = useLocation();
   const { firstName, lastName } = location.state || {};
 
-  const [conversation, setConversation] =
-    useState<IConversationResponse | null>(null);
-  const [messages, setMessages] = useState<IMessageResponse[]>([]);
+  const [conversation, setConversation] = useState<IConversationResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isNewMessageMode, setIsNewMessageMode] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
+    const abortCont = new AbortController();
 
     const fetchConversation = async () => {
       try {
-        const conversationFromApi =
-          await socialMediaApiService.getConversationAsync(otherUserId);
-        if (isMounted) {
-          setConversation(conversationFromApi);
-          if (conversationFromApi !== null)
-            setMessages(conversationFromApi.messages);
+        const response = await socialMediaApiService.getConversationAsync(otherUserId, abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          setConversation(response);
         }
-      } catch (error: any) {
-        if (isMounted) {
-          setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
         }
       }
     };
 
     fetchConversation();
 
-    return () => {
-      isMounted = false;
-    };
-  }, [otherUserId]);
+    return () => abortCont.abort();
+  }, [isNewMessageMode]);
 
-  const handleWriteMessage = () => {
-    setIsModalOpen(true);
-  };
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
-  const handleSendMessage = async (text: string) => {
-    if (text === "") {
-      setErrorMessage("You have to write something.");
-      setIsModalOpen(false);
+  if (!conversation) {
+    return <p>Laddar konversationen...</p>;
+  }
+
+  /* const messages = conversation?.messages ?? []; */
+
+  const handleSendMessage = async (newMessage: string) => {
+    if (newMessage === "") {
+      setError("You have to write something.");
+      setIsNewMessageMode(false);
     } else {
-      const newMsg: IMessageResponse = {
-        id: Date.now(), // Temporay ID to avoid key conflicts
-        content: text,
-        sentAt: new Date(),
-        senderId: otherUserId,
-      };
-
-      setMessages((prevMessages) => [...prevMessages, newMsg]);
-
       const request: IMessageRequest = {
-        content: text,
+        content: newMessage,
       };
+
       try {
         await socialMediaApiService.sendMessageAsync(otherUserId, request);
-        /* await fetchConversation(); */
-      } catch (error: any) {
-        setErrorMessage(error.message || "An unknown error occurred.");
+      } catch (err: any) {
+        setError(err.message || "An unknown error occurred.");
       } finally {
-        setNewMessage("");
-        setIsModalOpen(false);
+        setIsNewMessageMode(false);
       }
     }
   };
@@ -86,26 +73,41 @@ const ConversationView = () => {
       <h3>
         Mellan dig och {firstName} {lastName}
       </h3>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <SubMenu
-        items={[{ label: "Skriv ett meddelande", onClick: handleWriteMessage }]}
-      />
+
       {conversation === null ? (
         <p>Inga meddelanden än.</p>
       ) : (
         <div>
-          {messages.map((message) => (
-            <p key={message.id}>{message.content}</p>
+          {conversation.messages.map((message: IMessageResponse) => (
+            <div key={message.id}>
+              <p>
+                {message.senderId === otherUserId ? `${firstName} ${lastName}` : "Du"} skrev{" "}
+                {new Date(message.sentAt).toLocaleDateString("sv-SE")}, kl{" "}
+                {new Date(message.sentAt).toLocaleTimeString("sv-SE", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+              <p>{message.content}</p>
+            </div>
           ))}
         </div>
       )}
 
-      <PrivateMessageModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSaveOrSend={handleSendMessage}
-        initialValue={newMessage || ""}
-      />
+      {!isNewMessageMode && (
+        <div>
+          <button onClick={() => setIsNewMessageMode(true)}>Skriv nytt meddelande</button>
+        </div>
+      )}
+      {isNewMessageMode && (
+        <div>
+          <textarea rows={5} onChange={(e) => setNewMessage(e.target.value)} />
+          <div>
+            <button onClick={() => handleSendMessage(newMessage)}>Skicka</button>
+            <button onClick={() => setIsNewMessageMode(false)}>Avbryt</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

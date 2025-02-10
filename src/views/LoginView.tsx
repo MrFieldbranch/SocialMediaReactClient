@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void; }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -15,19 +15,22 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void;
 
     try {
       const loginRequest: ILoginRequest = { email, password };
-      const loginResponse = await socialMediaApiService.loginAsync(
-        loginRequest
-      );
+      const loginResponse = await socialMediaApiService.loginAsync(loginRequest);
       localStorage.setItem("authToken", loginResponse.token);
       socialMediaApiService.setAuthorizationHeader(loginResponse.token);
       const decodedToken: any = jwtDecode(loginResponse.token);
       localStorage.setItem("userId", decodedToken.nameid);
       setIsLoggedIn(true);
       navigate("/myprofile");
-    } catch (error: any) {
-      setErrorMessage(error.message || "An unknown error occurred.");
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
     }
   };
+
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
 
   return (
     <div className="login-view">
@@ -52,8 +55,7 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void;
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>        
         <button type="submit">Logga in</button>
       </form>
     </div>

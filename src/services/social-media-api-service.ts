@@ -48,11 +48,7 @@ export class SocialMediaApiService {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to register new user: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to register new user: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
@@ -65,11 +61,7 @@ export class SocialMediaApiService {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to login: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to login: ${errorMessage || "No error message provided by the server."}`);
     }
 
     const loginResponse: ILoginResponse | null = await response.json();
@@ -81,52 +73,44 @@ export class SocialMediaApiService {
     return loginResponse;
   }
 
-  async getAllInterestsAsync(): Promise<IInterestResponse[]> {
+  async getAllInterestsAsync(signal?: AbortSignal): Promise<IInterestResponse[]> {
     const response = await fetch(`${this.baseUrl}/interest`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to fetch interests: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to fetch interests: ${errorMessage || "No error message provided by the server."}`);
     }
 
     const interests: IInterestResponse[] = await response.json();
     return interests || []; // Ensure it returns an empty array if the response is null or undefined
   }
 
-  async getMyInterestsAsync(): Promise<IInterestResponse[]> {
+  async getMyInterestsAsync(signal?: AbortSignal): Promise<IInterestResponse[]> {
     const response = await fetch(`${this.baseUrl}/interest/myowninterests`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to fetch your interests: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to fetch your interests: ${errorMessage || "No error message provided by the server."}`);
     }
 
     const myInterests: IInterestResponse[] = await response.json();
     return myInterests || []; // Return an empty array if the response is null or undefined
   }
 
-  async getInterestsNotOwnedByMeAsync(): Promise<IInterestResponse[]> {
-    const response = await fetch(
-      `${this.baseUrl}/interest/interestsnotownedbyme`,
-      {
-        method: "GET",
-        headers: { ...this.requestHeaders },
-      }
-    );
+  async getInterestsNotOwnedByMeAsync(signal?: AbortSignal): Promise<IInterestResponse[]> {
+    const response = await fetch(`${this.baseUrl}/interest/interestsnotownedbyme`, {
+      method: "GET",
+      headers: { ...this.requestHeaders },
+      signal,
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
@@ -141,29 +125,27 @@ export class SocialMediaApiService {
     return interestsNotOwnedByMe || []; // Return an empty array if the response is null or undefined
   }
 
-  async getMyFriendsAsync(): Promise<IBasicUserResponse[]> {
+  async getMyFriendsAsync(signal?: AbortSignal): Promise<IBasicUserResponse[]> {
     const response = await fetch(`${this.baseUrl}/user/myfriends`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to fetch your friends: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to fetch your friends: ${errorMessage || "No error message provided by the server."}`);
     }
 
     const myFriends: IBasicUserResponse[] = await response.json();
     return myFriends || []; // Return an empty array if the response is null or undefined
   }
 
-  async getStrangersAsync(): Promise<IBasicUserResponse[]> {
+  async getStrangersAsync(signal?: AbortSignal): Promise<IBasicUserResponse[]> {
     const response = await fetch(`${this.baseUrl}/user/strangers`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
@@ -179,16 +161,12 @@ export class SocialMediaApiService {
     return strangers || []; // Return an empty array if the response is null or undefined
   }
 
-  async getStrangersBasedOnInterestsAsync(): Promise<
-    IUserWithSharedInterestsResponse[]
-  > {
-    const response = await fetch(
-      `${this.baseUrl}/user/getstrangersbasedoninterests`,
-      {
-        method: "GET",
-        headers: { ...this.requestHeaders },
-      }
-    );
+  async getStrangersBasedOnInterestsAsync(signal?: AbortSignal): Promise<IUserWithSharedInterestsResponse[]> {
+    const response = await fetch(`${this.baseUrl}/user/getstrangersbasedoninterests`, {
+      method: "GET",
+      headers: { ...this.requestHeaders },
+      signal,
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
@@ -199,21 +177,16 @@ export class SocialMediaApiService {
       );
     }
 
-    const strangersBasedOnCommonInterests: IUserWithSharedInterestsResponse[] =
-      await response.json();
+    const strangersBasedOnCommonInterests: IUserWithSharedInterestsResponse[] = await response.json();
     return strangersBasedOnCommonInterests || []; // Return an empty array if the response is null or undefined
   }
 
-  async getUsersWithPendingFriendRequestsToMeAsync(): Promise<
-    IPendingFriendResponse[]
-  > {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/allpendingtome`,
-      {
-        method: "GET",
-        headers: { ...this.requestHeaders },
-      }
-    );
+  async getUsersWithPendingFriendRequestsToMeAsync(signal?: AbortSignal): Promise<IPendingFriendResponse[]> {
+    const response = await fetch(`${this.baseUrl}/friendrequest/allpendingtome`, {
+      method: "GET",
+      headers: { ...this.requestHeaders },
+      signal,
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
@@ -224,21 +197,16 @@ export class SocialMediaApiService {
       );
     }
 
-    const pendingFriendRequestsToMe: IPendingFriendResponse[] =
-      await response.json();
+    const pendingFriendRequestsToMe: IPendingFriendResponse[] = await response.json();
     return pendingFriendRequestsToMe || []; // Return an empty array if the response is null or undefined
   }
 
-  async getUsersWithPendingFriendRequestsFromMeAsync(): Promise<
-    IPendingFriendResponse[]
-  > {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/allpendingfromme`,
-      {
-        method: "GET",
-        headers: { ...this.requestHeaders },
-      }
-    );
+  async getUsersWithPendingFriendRequestsFromMeAsync(signal?: AbortSignal): Promise<IPendingFriendResponse[]> {
+    const response = await fetch(`${this.baseUrl}/friendrequest/allpendingfromme`, {
+      method: "GET",
+      headers: { ...this.requestHeaders },
+      signal,
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
@@ -249,14 +217,11 @@ export class SocialMediaApiService {
       );
     }
 
-    const pendingFriendRequestsFromMe: IPendingFriendResponse[] =
-      await response.json();
+    const pendingFriendRequestsFromMe: IPendingFriendResponse[] = await response.json();
     return pendingFriendRequestsFromMe || []; // Return an empty array if the response is null or undefined
   }
 
-  async createNewInterestAsync(
-    interestRequest: IInterestRequest
-  ): Promise<IInterestResponse> {
+  async createNewInterestAsync(interestRequest: IInterestRequest): Promise<IInterestResponse> {
     const response = await fetch(`${this.baseUrl}/interest`, {
       method: "POST",
       headers: { ...this.requestHeaders },
@@ -265,15 +230,10 @@ export class SocialMediaApiService {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to create interest: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to create interest: ${errorMessage || "No error message provided by the server."}`);
     }
 
-    const newApprovedInterest =
-      (await response.json()) as IInterestResponse | null;
+    const newApprovedInterest = (await response.json()) as IInterestResponse | null;
 
     if (!newApprovedInterest) {
       throw new Error("Failed to deserialize user data.");
@@ -282,9 +242,7 @@ export class SocialMediaApiService {
     return newApprovedInterest;
   }
 
-  async createNewPostToPublicBoardAsync(
-    postRequest: IPostToPublicBoardRequest
-  ): Promise<void> {
+  async createNewPostToPublicBoardAsync(postRequest: IPostToPublicBoardRequest): Promise<void> {
     const response = await fetch(`${this.baseUrl}/posttopublicboard`, {
       method: "POST",
       headers: { ...this.requestHeaders },
@@ -293,11 +251,7 @@ export class SocialMediaApiService {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to create new post: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to create new post: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
@@ -310,9 +264,7 @@ export class SocialMediaApiService {
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to add this interest to yourself: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to add this interest to yourself: ${errorMessage || "No error message provided by the server."}`
       );
     }
   }
@@ -326,129 +278,88 @@ export class SocialMediaApiService {
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to remove this interest from yourself: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to remove this interest from yourself: ${errorMessage || "No error message provided by the server."}`
       );
     }
   }
 
   async sendFriendRequestAsync(otherUserId: number): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/${otherUserId}`,
-      {
-        method: "POST",
-        headers: { ...this.requestHeaders },
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/friendrequest/${otherUserId}`, {
+      method: "POST",
+      headers: { ...this.requestHeaders },
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to send friend request: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to send friend request: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
   async acceptFriendRequestAsync(otherUserId: number): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/acceptrequest/${otherUserId}`,
-      {
-        method: "PUT",
-        headers: { ...this.requestHeaders },
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/friendrequest/acceptrequest/${otherUserId}`, {
+      method: "PUT",
+      headers: { ...this.requestHeaders },
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to accept friend request: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to accept friend request: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
   async declineFriendRequestAsync(otherUserId: number): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/declinerequest/${otherUserId}`,
-      {
-        method: "DELETE",
-        headers: { ...this.requestHeaders },
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/friendrequest/declinerequest/${otherUserId}`, {
+      method: "DELETE",
+      headers: { ...this.requestHeaders },
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to decline friend request: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to decline friend request: ${errorMessage || "No error message provided by the server."}`
       );
     }
   }
 
   async withdrawFriendRequestAsync(otherUserId: number): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/withdrawrequest/${otherUserId}`,
-      {
-        method: "DELETE",
-        headers: { ...this.requestHeaders },
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/friendrequest/withdrawrequest/${otherUserId}`, {
+      method: "DELETE",
+      headers: { ...this.requestHeaders },
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to withdraw friend request: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to withdraw friend request: ${errorMessage || "No error message provided by the server."}`
       );
     }
   }
 
   async endFriendshipAsync(otherUserId: number): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/friendrequest/cancelfriendship/${otherUserId}`,
-      {
-        method: "DELETE",
-        headers: { ...this.requestHeaders },
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/friendrequest/cancelfriendship/${otherUserId}`, {
+      method: "DELETE",
+      headers: { ...this.requestHeaders },
+    });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to delete friendship: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to delete friendship: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
-  async getConversationAsync(
-    otherUserId: number
-  ): Promise<IConversationResponse | null> {
-    const response = await fetch(
-      `${this.baseUrl}/conversation/${otherUserId}`,
-      {
-        method: "GET",
-        headers: { ...this.requestHeaders },
-      }
-    );
+  async getConversationAsync(otherUserId: number, signal?: AbortSignal): Promise<IConversationResponse | null> {
+    const response = await fetch(`${this.baseUrl}/conversation/${otherUserId}`, {
+      method: "GET",
+      headers: { ...this.requestHeaders },
+      signal,
+    });
 
     if (response.status === 404) {
       return null;
     }
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to fetch conversation: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to fetch conversation: ${errorMessage || "No error message provided by the server."}`);
     }
 
     return await response.json();
@@ -461,10 +372,7 @@ export class SocialMediaApiService {
         return conversation; */
   }
 
-  async sendMessageAsync(
-    otherUserId: number,
-    message: IMessageRequest
-  ): Promise<void> {
+  async sendMessageAsync(otherUserId: number, message: IMessageRequest): Promise<void> {
     const response = await fetch(`${this.baseUrl}/message/${otherUserId}`, {
       method: "POST",
       headers: { ...this.requestHeaders },
@@ -473,45 +381,37 @@ export class SocialMediaApiService {
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to send message: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to send message: ${errorMessage || "No error message provided by the server."}`);
     }
   }
 
-  async getAllPostsAsync(): Promise<IPostToPublicBoardResponse[]> {
+  async getAllPostsAsync(signal?: AbortSignal): Promise<IPostToPublicBoardResponse[]> {
     const response = await fetch(`${this.baseUrl}/posttopublicboard`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
-      throw new Error(
-        `Failed to fetch posts: ${
-          errorMessage || "No error message provided by the server."
-        }`
-      );
+      throw new Error(`Failed to fetch posts: ${errorMessage || "No error message provided by the server."}`);
     }
 
     const allPosts: IPostToPublicBoardResponse[] = await response.json();
     return allPosts || []; // Return an empty array if the response is null or undefined
   }
 
-  async getMyselfAsync(): Promise<IDetailedUserResponse> {
+  async getMyselfAsync(signal?: AbortSignal): Promise<IDetailedUserResponse> {
     const response = await fetch(`${this.baseUrl}/user/getmyowndata`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to fetch your own user profile: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to fetch your own user profile: ${errorMessage || "No error message provided by the server."}`
       );
     }
 
@@ -524,18 +424,17 @@ export class SocialMediaApiService {
     return myself;
   }
 
-  async getOtherUserAsync(otherUserId: number): Promise<IDetailedUserResponse> {
+  async getOtherUserAsync(otherUserId: number, signal?: AbortSignal): Promise<IDetailedUserResponse> {
     const response = await fetch(`${this.baseUrl}/user/${otherUserId}`, {
       method: "GET",
       headers: { ...this.requestHeaders },
+      signal,
     });
 
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to fetch the other user's profile: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to fetch the other user's profile: ${errorMessage || "No error message provided by the server."}`
       );
     }
 
@@ -548,9 +447,7 @@ export class SocialMediaApiService {
     return user;
   }
 
-  async updatePersonalInfoAsync(
-    request: IUpdatePersonalInfoRequest
-  ): Promise<void> {
+  async updatePersonalInfoAsync(request: IUpdatePersonalInfoRequest): Promise<void> {
     const response = await fetch(`${this.baseUrl}/personalinfo`, {
       method: "PUT",
       headers: { ...this.requestHeaders },
@@ -560,15 +457,11 @@ export class SocialMediaApiService {
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(
-        `Failed to update your personal info: ${
-          errorMessage || "No error message provided by the server."
-        }`
+        `Failed to update your personal info: ${errorMessage || "No error message provided by the server."}`
       );
     }
   }
 }
 
-const socialMediaApiService = new SocialMediaApiService(
-  "https://localhost:8000"
-); /* Singleton */
+const socialMediaApiService = new SocialMediaApiService("https://localhost:8000"); /* Singleton */
 export default socialMediaApiService;
