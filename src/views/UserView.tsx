@@ -8,6 +8,7 @@ import socialMediaApiService from "../services/social-media-api-service"; /* Sin
 import BasicUser from "../components/BasicUser";
 import SubMenu from "../components/SubMenu";
 import { IDetailedUserResponse } from "../models/IDetailedUserResponse";
+import { initialDetailedUser } from "../initial-values/initial-values";
 
 const UserView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
@@ -15,8 +16,9 @@ const UserView = () => {
 
   const navigate = useNavigate();
 
-  const [otherUser, setOtherUser] = useState<IDetailedUserResponse | null>(null);
+  const [otherUser, setOtherUser] = useState<IDetailedUserResponse>(initialDetailedUser);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
 	const abortCont = new AbortController();
@@ -39,11 +41,14 @@ const UserView = () => {
 					typeOfUser: mappedTypeOfUser,
 					sex: response.sex === 0 ? Sex.Male : Sex.Female,
 				 });
+				 setError(null);
 			}
 		} catch (err: any) {
 			if (err.name !== "AbortError") {
 				setError(err.message || "An unknown error occurred.");
 			}
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -55,8 +60,9 @@ const UserView = () => {
   if (error) 
     return <p className="error-message">{error}</p>;  
 
-  if (!otherUser) 
-    return <p>Laddar profilen...</p>;
+  if (isLoading) {
+    return <p>Laddar användarprofilen...</p>;
+  }
 
   const renderCorrectSubMenu = (typeOfUser: TypeOfUser): React.ReactElement | null => {
     if (typeOfUser === TypeOfUser.Friend) {
@@ -218,59 +224,4 @@ const UserView = () => {
   );
 };
 
-export default UserView;
-
-
-/* const [firstName, setFirstName] = useState<string>("");
-const [lastName, setLastName] = useState<string>("");
-const [email, setEmail] = useState<string>("");
-const [typeOfUser, setTypeOfUser] = useState<TypeOfUser>(TypeOfUser.Default);
-const [personalInfo, setPersonalInfo] = useState<string | null>(null);
-const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
-const [age, setAge] = useState<number>(0);
-const [sex, setSex] = useState<Sex>(Sex.Male);
-const [friends, setFriends] = useState<IBasicUserResponse[]>([]);
-const [interests, setInterests] = useState<IInterestResponse[]>([]);
-
-useEffect(() => {
-  let isMounted = true;
-
-  const fetchProfile = async () => {
-    try {
-      const profileData = await socialMediaApiService.getOtherUserAsync(otherUserId);
-      if (isMounted) {
-        setFirstName(profileData.firstName);
-        setLastName(profileData.lastName);
-        setEmail(profileData.email);
-        setTypeOfUser(          
-          {
-            0: TypeOfUser.Default,
-            1: TypeOfUser.Me,
-            2: TypeOfUser.Friend,
-            3: TypeOfUser.Stranger,
-            4: TypeOfUser.UserThatSentFriendRequestToMe,
-            5: TypeOfUser.UserThatISentFriendRequestTo,
-          }[profileData.typeOfUser] || TypeOfUser.Default
-        );
-        if (typeOfUser === TypeOfUser.Friend) {
-          setPersonalInfo(profileData.personalInfo);
-        }
-        setDateOfBirth(profileData.dateOfBirth);
-        setAge(profileData.age);
-        setSex(profileData.sex === 0 ? Sex.Male : Sex.Female);
-        setFriends(profileData.friends);
-        setInterests(profileData.interests);
-      }
-    } catch (error: any) {
-      if (isMounted) {
-        setErrorMessage(error.message || "An unknown error occurred.");
-      }
-    }
-  };
-
-  fetchProfile();
-
-  return () => {
-    isMounted = false;
-  };
-}, []); */
+export default UserView;          

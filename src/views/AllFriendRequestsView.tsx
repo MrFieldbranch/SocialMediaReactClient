@@ -7,6 +7,7 @@ const AllFriendRequestsView = () => {
   const [pendingToMe, setPendingToMe] = useState<IPendingFriendResponse[]>([]);
   const [pendingFromMe, setPendingFromMe] = useState<IPendingFriendResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -20,12 +21,15 @@ const AllFriendRequestsView = () => {
         if (!abortCont.signal.aborted) {
           setPendingToMe(toMe);
           setPendingFromMe(fromMe);
+		  setError(null);
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
           setError(err.message || "An unknown error occurred.");
         }
-      }
+      } finally {
+		setIsLoading(false);
+	  }
     };
 
     fetchFriendRequests();
@@ -35,6 +39,10 @@ const AllFriendRequestsView = () => {
 
   if (error) {
     return <p className="error-message">{error}</p>;
+  }
+
+  if (isLoading) {
+    return <p>Laddar vänförfrågningarna...</p>;
   }
 
   return (

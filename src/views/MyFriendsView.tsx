@@ -6,6 +6,7 @@ import socialMediaApiService from "../services/social-media-api-service"; /* Sin
 const MyFriendsView = () => {
   const [friends, setFriends] = useState<IBasicUserResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -15,12 +16,15 @@ const MyFriendsView = () => {
         const response = await socialMediaApiService.getMyFriendsAsync(abortCont.signal);
         if (!abortCont.signal.aborted) {
           setFriends(response);
+		  setError(null);
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
           setError(err.message || "An unknown error occurred.");
         }
-      }
+      } finally {
+		setIsLoading(false);
+	  }
     };
 
 	fetchFriends();
@@ -30,6 +34,10 @@ const MyFriendsView = () => {
 
   if (error) {
     return <p className="error-message">{error}</p>;
+  }
+
+  if (isLoading) {
+    return <p>Laddar din vänlista...</p>;
   }
 
   return (

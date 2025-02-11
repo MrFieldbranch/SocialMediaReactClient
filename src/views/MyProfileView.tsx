@@ -4,10 +4,14 @@ import { IInterestResponse } from "../models/IInterestResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
 import { IDetailedUserResponse } from "../models/IDetailedUserResponse";
 import { IUpdatePersonalInfoRequest } from "../models/IUpdatePersonalInfoRequest";
+import { initialDetailedUser } from "../initial-values/initial-values";
+
+
 
 const MyProfileView = () => {
-  const [myUser, setMyUser] = useState<IDetailedUserResponse | null>(null);
+  const [myUser, setMyUser] = useState<IDetailedUserResponse>(initialDetailedUser);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [newText, setNewText] = useState<string>("");
 
@@ -18,13 +22,16 @@ const MyProfileView = () => {
       try {
         const response = await socialMediaApiService.getMyselfAsync(abortCont.signal);
         if (!abortCont.signal.aborted) {
-          setMyUser(response);
+          setMyUser(response);          
+          setError(null);
         }
       } catch (err: any) {
-        if (err.name !== "AbortError") {
+        if (err.name !== "AbortError") {          
           setError(err.message || "An unknown error occurred.");
         }
-      }
+      } finally {
+		setIsLoading(false);
+	  }
     };
 
     fetchMyUser();
@@ -36,22 +43,22 @@ const MyProfileView = () => {
     return <p className="error-message">{error}</p>;
   }
 
-  if (!myUser) {
+  if (isLoading) {
     return <p>Laddar din profil...</p>;
   }
 
   const handleSavePersonalInfo = async (newText: string) => {
-	const updatedPersonalInfo = newText.trim() === "" ? null : newText;
-	const request: IUpdatePersonalInfoRequest = {
-		personalInfo: updatedPersonalInfo
-	};
-	try {
-		await socialMediaApiService.updatePersonalInfoAsync(request);
-	} catch (err: any) {
-		setError(err.message || "An unknown error occurred.");
-	} finally {
-		setIsEditMode(false);
-	}
+    const updatedPersonalInfo = newText.trim() === "" ? null : newText;
+    const request: IUpdatePersonalInfoRequest = {
+      personalInfo: updatedPersonalInfo,
+    };
+    try {
+      await socialMediaApiService.updatePersonalInfoAsync(request);
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
+    } finally {
+      setIsEditMode(false);
+    }
   };
 
   return (
@@ -81,8 +88,7 @@ const MyProfileView = () => {
       {!isEditMode && (
         <div>
           {myUser.personalInfo === null ? (
-            <p>Inget skrivet än. Gör gärna det om du vill berätta mer om dig själv. 
-			   Endast dina vänner kan se vad som står här.</p>
+            <p>Inget skrivet än. Gör gärna det om du vill berätta mer om dig själv. Endast dina vänner kan se vad som står här.</p>
           ) : (
             <p>{myUser.personalInfo}</p>
           )}
@@ -91,17 +97,13 @@ const MyProfileView = () => {
       )}
       {isEditMode && (
         <div>
-          <textarea 
-		  	value={newText} 
-			rows={5} 
-			onChange={(e) => setNewText(e.target.value)} 
-		  />
-		  <div>
-			<button onClick={() => handleSavePersonalInfo(newText)}>Spara</button>
-			<button onClick={() => setIsEditMode(false)}>Avbryt</button>
-		  </div>
+          <textarea value={newText} rows={5} onChange={(e) => setNewText(e.target.value)} />
+          <div>
+            <button onClick={() => handleSavePersonalInfo(newText)}>Spara</button>
+            <button onClick={() => setIsEditMode(false)}>Avbryt</button>
+          </div>
         </div>
-      )}      
+      )}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import socialMediaApiService from "../services/social-media-api-service"; /* Sin
 import { IMessageRequest } from "../models/IMessageRequest";
 import { IMessageResponse } from "../models/IMessageResponse";
 
+
 const ConversationView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
   const otherUserId = Number(id);
@@ -14,6 +15,7 @@ const ConversationView = () => {
 
   const [conversation, setConversation] = useState<IConversationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNewMessageMode, setIsNewMessageMode] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
 
@@ -25,12 +27,15 @@ const ConversationView = () => {
         const response = await socialMediaApiService.getConversationAsync(otherUserId, abortCont.signal);
         if (!abortCont.signal.aborted) {
           setConversation(response);
+		  setError(null);
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
           setError(err.message || "An unknown error occurred.");
         }
-      }
+      } finally {
+		setIsLoading(false);
+	  }
     };
 
     fetchConversation();
@@ -42,11 +47,9 @@ const ConversationView = () => {
     return <p className="error-message">{error}</p>;
   }
 
-  if (!conversation) {
+  if (isLoading) {
     return <p>Laddar konversationen...</p>;
-  }
-
-  /* const messages = conversation?.messages ?? []; */
+  }  
 
   const handleSendMessage = async (newMessage: string) => {
     if (newMessage === "") {
