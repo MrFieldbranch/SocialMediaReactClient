@@ -18,6 +18,7 @@ const ConversationView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNewMessageMode, setIsNewMessageMode] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<string>("");
+  const [useEffectTrigger, setUseEffectTrigger] = useState<number>(1);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -41,18 +42,12 @@ const ConversationView = () => {
     fetchConversation();
 
     return () => abortCont.abort();
-  }, [isNewMessageMode]);
+  }, [useEffectTrigger]);
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
-  }
-
-  if (isLoading) {
-    return <p>Laddar konversationen...</p>;
-  }  
+   
 
   const handleSendMessage = async (newMessage: string) => {
-    if (newMessage === "") {
+    if (newMessage.trim() === "") {
       setError("You have to write something.");
       setIsNewMessageMode(false);
     } else {
@@ -62,13 +57,23 @@ const ConversationView = () => {
 
       try {
         await socialMediaApiService.sendMessageAsync(otherUserId, request);
+		setUseEffectTrigger((prev) => prev + 1);
       } catch (err: any) {
         setError(err.message || "An unknown error occurred.");
       } finally {
+		setNewMessage("");
         setIsNewMessageMode(false);
       }
     }
   };
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  if (isLoading) {
+    return <p>Laddar konversationen...</p>;
+  } 
 
   return (
     <div className="conversation-view">

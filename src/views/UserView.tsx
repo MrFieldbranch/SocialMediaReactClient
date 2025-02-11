@@ -21,53 +21,47 @@ const UserView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-	const abortCont = new AbortController();
+    const abortCont = new AbortController();
 
-	const fetchOtherUser = async () => {
-		try {
-			const response = await socialMediaApiService.getOtherUserAsync(otherUserId, abortCont.signal);
-			if (!abortCont.signal.aborted) {
-				const mappedTypeOfUser = {
-					0: TypeOfUser.Default,
-					1: TypeOfUser.Me,
-					2: TypeOfUser.Friend,
-					3: TypeOfUser.Stranger,
-					4: TypeOfUser.UserThatSentFriendRequestToMe,
-					5: TypeOfUser.UserThatISentFriendRequestTo,
-				}[response.typeOfUser] || TypeOfUser.Default;
+    const fetchOtherUser = async () => {
+      try {
+        const response = await socialMediaApiService.getOtherUserAsync(otherUserId, abortCont.signal);
+        if (!abortCont.signal.aborted) {
+          const mappedTypeOfUser =
+            {
+              0: TypeOfUser.Default,
+              1: TypeOfUser.Me,
+              2: TypeOfUser.Friend,
+              3: TypeOfUser.Stranger,
+              4: TypeOfUser.UserThatSentFriendRequestToMe,
+              5: TypeOfUser.UserThatISentFriendRequestTo,
+            }[response.typeOfUser] || TypeOfUser.Default;
 
-				setOtherUser({ 
-					...response, 
-					typeOfUser: mappedTypeOfUser,
-					sex: response.sex === 0 ? Sex.Male : Sex.Female,
-				 });
-				 setError(null);
-			}
-		} catch (err: any) {
-			if (err.name !== "AbortError") {
-				setError(err.message || "An unknown error occurred.");
-			}
-		} finally {
-			setIsLoading(false);
-		}
-	};
+          setOtherUser({
+            ...response,
+            typeOfUser: mappedTypeOfUser,
+            sex: response.sex === 0 ? Sex.Male : Sex.Female,
+          });
+          setError(null);
+        }
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unknown error occurred.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-	fetchOtherUser();
+    fetchOtherUser();
 
-	return () => abortCont.abort();
+    return () => abortCont.abort();
   }, [id]);
-
-  if (error) 
-    return <p className="error-message">{error}</p>;  
-
-  if (isLoading) {
-    return <p>Laddar användarprofilen...</p>;
-  }
 
   const renderCorrectSubMenu = (typeOfUser: TypeOfUser): React.ReactElement | null => {
     if (typeOfUser === TypeOfUser.Friend) {
-		const firstName = otherUser.firstName;
-		const lastName = otherUser.lastName;
+      const firstName = otherUser.firstName;
+      const lastName = otherUser.lastName;
       return (
         <SubMenu
           items={[
@@ -171,20 +165,18 @@ const UserView = () => {
   };
 
   const getUserDescription = (typeOfUser: TypeOfUser): string => {
-    if (typeOfUser === TypeOfUser.Friend) 
-		return "VÄN";
-    else if (typeOfUser === TypeOfUser.Stranger) 
-		return "INTE VÄN";
-    else if (typeOfUser === TypeOfUser.UserThatSentFriendRequestToMe) 
-		return "HAR SKICKAT VÄNFÖRFRÅGAN TILL DIG";
-    else if (typeOfUser === TypeOfUser.UserThatISentFriendRequestTo) 
-		return "HAR FÅTT EN VÄNFÖRFRÅGAN FRÅN DIG";
-    else 
-		return "OKÄND STATUS";
+    if (typeOfUser === TypeOfUser.Friend) return "VÄN";
+    else if (typeOfUser === TypeOfUser.Stranger) return "INTE VÄN";
+    else if (typeOfUser === TypeOfUser.UserThatSentFriendRequestToMe) return "HAR SKICKAT VÄNFÖRFRÅGAN TILL DIG";
+    else if (typeOfUser === TypeOfUser.UserThatISentFriendRequestTo) return "HAR FÅTT EN VÄNFÖRFRÅGAN FRÅN DIG";
+    else return "OKÄND STATUS";
   };
 
-  
-  
+  if (error) return <p className="error-message">{error}</p>;
+
+  if (isLoading) {
+    return <p>Laddar användarprofilen...</p>;
+  }
 
   return (
     <div className="user-view">
@@ -192,7 +184,8 @@ const UserView = () => {
       <h1>ANVÄNDARPROFIL</h1>
 
       <p>
-        {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}), {getUserDescription(otherUser.typeOfUser)}
+        {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
+        {getUserDescription(otherUser.typeOfUser)}
       </p>
       <p>Email:</p>
       <p>{otherUser.email}</p>
@@ -211,17 +204,21 @@ const UserView = () => {
         </p>
       )}
       <p>Om personen:</p>
-      {otherUser.typeOfUser !== TypeOfUser.Friend ? 
-	  	<p>Du är inte vän med denna person så du kan inte se detta stycke.</p> : 
-		<p>{otherUser.personalInfo}</p>}
+      {otherUser.typeOfUser !== TypeOfUser.Friend ? (
+        <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
+      ) : (
+        <p>{otherUser.personalInfo}</p>
+      )}
       <p>Personens vänner:</p>
       {otherUser.friends.length === 0 ? (
         <p>Inga vänner</p>
       ) : (
-        otherUser.friends.map((friend: IBasicUserResponse) => <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />)
+        otherUser.friends.map((friend: IBasicUserResponse) => (
+          <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />
+        ))
       )}
     </div>
   );
 };
 
-export default UserView;          
+export default UserView;

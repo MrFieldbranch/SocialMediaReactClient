@@ -14,6 +14,7 @@ const MyProfileView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [newText, setNewText] = useState<string>("");
+  const [useEffectTrigger, setUseEffectTrigger] = useState<number>(1);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -37,14 +38,11 @@ const MyProfileView = () => {
     fetchMyUser();
 
     return () => abortCont.abort();
-  }, [isEditMode]);
+  }, [useEffectTrigger]);    
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
-  }
-
-  if (isLoading) {
-    return <p>Laddar din profil...</p>;
+  const handleEditMode = () => {
+	setIsEditMode(true);
+	setNewText(myUser.personalInfo ?? "");
   }
 
   const handleSavePersonalInfo = async (newText: string) => {
@@ -54,12 +52,21 @@ const MyProfileView = () => {
     };
     try {
       await socialMediaApiService.updatePersonalInfoAsync(request);
+	  setUseEffectTrigger((prev) => prev + 1);
     } catch (err: any) {
       setError(err.message || "An unknown error occurred.");
     } finally {
       setIsEditMode(false);
     }
   };
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  if (isLoading) {
+    return <p>Laddar din profil...</p>;
+  }
 
   return (
     <div className="my-profile-view">
@@ -92,7 +99,7 @@ const MyProfileView = () => {
           ) : (
             <p>{myUser.personalInfo}</p>
           )}
-          <button onClick={() => setIsEditMode(true)}>Redigera</button>
+          <button onClick={() => handleEditMode()}>Redigera</button>
         </div>
       )}
       {isEditMode && (
