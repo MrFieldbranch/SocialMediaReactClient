@@ -90,6 +90,16 @@ button:focus-visible {
 	/* Måste jag ha med z-index här också, för att denna div med knapparna ska synas? */
 }
 
+.button-hover {
+  color: inherit; /* Default color */
+  transition: color 0.2s ease-in-out; /* Smooth effect */
+}
+
+.button-hover:hover {
+  color: var(--hover-color);
+}
+
+
 
 @media (prefers-color-scheme: light) {
   :root {

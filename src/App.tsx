@@ -8,11 +8,11 @@ import UserView from "./views/UserView";
 import ConversationView from "./views/ConversationView";
 import StrangersView from "./views/StrangersView";
 import AllFriendRequestsView from "./views/AllFriendRequestsView";
-import AllInterestsView from "./views/AllInterestsView";
+import InterestsView from "./views/InterestsView";
 import PublicBoardView from "./views/PublicBoardView";
 /* import StrangersSortedView from "./views/StrangersSortedView"; */
-import MyInterestsView from "./views/MyInterestsView";
-import InterestsIDontHaveView from "./views/InterestsIDontHaveView";
+/* import MyInterestsView from "./views/MyInterestsView";
+import InterestsIDontHaveView from "./views/InterestsIDontHaveView"; */
 import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import PrivateRoute from "./components/PrivateRoute";
@@ -35,22 +35,10 @@ const App = () => {
     <>
       {isLoggedIn && <Header setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
-        <Route 
-			path="/" 
-			element={<Navigate to="/start" />} 
-		/>
-        <Route 
-			path="/start" 
-			element={<StartView />} 
-		/>
-        <Route 
-			path="/login" 
-			element={<LoginView setIsLoggedIn={setIsLoggedIn} />} 
-		/>
-        <Route 
-			path="/registernewuser" 
-			element={<RegisterNewUserView setIsLoggedIn={setIsLoggedIn} />} 
-		/>
+        <Route path="/" element={<Navigate to="/start" />} />
+        <Route path="/start" element={<StartView />} />
+        <Route path="/login" element={<LoginView setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/registernewuser" element={<RegisterNewUserView setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/myprofile"
           element={
@@ -117,10 +105,18 @@ const App = () => {
           }
         />
         <Route
+          path="/interests/*"
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <InterestsView />
+            </PrivateRoute>
+          }
+        />
+        {/* <Route
           path="/interests"
           element={
             <PrivateRoute isLoggedIn={isLoggedIn}>
-              <AllInterestsView />
+              <InterestsView />
             </PrivateRoute>
           }
         >
@@ -140,7 +136,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
-        </Route>
+        </Route> */}
         <Route
           path="/publicboard"
           element={
