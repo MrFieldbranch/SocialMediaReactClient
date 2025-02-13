@@ -8,6 +8,7 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {

@@ -10,9 +10,6 @@ import StrangersView from "./views/StrangersView";
 import AllFriendRequestsView from "./views/AllFriendRequestsView";
 import InterestsView from "./views/InterestsView";
 import PublicBoardView from "./views/PublicBoardView";
-/* import StrangersSortedView from "./views/StrangersSortedView"; */
-/* import MyInterestsView from "./views/MyInterestsView";
-import InterestsIDontHaveView from "./views/InterestsIDontHaveView"; */
 import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import PrivateRoute from "./components/PrivateRoute";
@@ -70,24 +67,7 @@ const App = () => {
               <ConversationView />
             </PrivateRoute>
           }
-        />
-        {/* <Route
-          path="/strangers"
-          element={
-            <PrivateRoute isLoggedIn={isLoggedIn}>
-              <StrangersView />
-            </PrivateRoute>
-          }
-        >
-          <Route
-            path="sorted"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <StrangersSortedView />
-              </PrivateRoute>
-            }
-          />
-        </Route> */}
+        />        
         <Route
           path="/strangers/*"
           element={
@@ -111,32 +91,7 @@ const App = () => {
               <InterestsView />
             </PrivateRoute>
           }
-        />
-        {/* <Route
-          path="/interests"
-          element={
-            <PrivateRoute isLoggedIn={isLoggedIn}>
-              <InterestsView />
-            </PrivateRoute>
-          }
-        >
-          <Route
-            path="myinterests"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <MyInterestsView />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="notmyinterests"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <InterestsIDontHaveView />
-              </PrivateRoute>
-            }
-          />
-        </Route> */}
+        />        
         <Route
           path="/publicboard"
           element={
