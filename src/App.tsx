@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import PrivateRoute from "./components/PrivateRoute";
 import socialMediaApiService from "./services/social-media-api-service"; /* Singleton */
+import NotFoundView from "./views/NotFoundView";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,7 +68,7 @@ const App = () => {
               <ConversationView />
             </PrivateRoute>
           }
-        />        
+        />
         <Route
           path="/strangers/*"
           element={
@@ -91,7 +92,7 @@ const App = () => {
               <InterestsView />
             </PrivateRoute>
           }
-        />        
+        />
         <Route
           path="/publicboard"
           element={
@@ -100,6 +101,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<NotFoundView isLoggedIn={isLoggedIn} />} />
       </Routes>
     </>
   );
