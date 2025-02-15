@@ -30,7 +30,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div className="main-container">
       {isLoggedIn && <Header setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
         <Route path="/" element={<Navigate to="/start" />} />
@@ -103,7 +103,7 @@ const App = () => {
         />
         <Route path="*" element={<NotFoundView isLoggedIn={isLoggedIn} />} />
       </Routes>
-    </>
+    </div>
   );
 };
 

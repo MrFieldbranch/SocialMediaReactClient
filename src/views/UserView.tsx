@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Sex } from "../enums/sex";
-import { IInterestResponse } from "../models/IInterestResponse";
 import { TypeOfUser } from "../enums/type-of-user";
 import { IBasicUserResponse } from "../models/IBasicUserResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
@@ -9,6 +8,7 @@ import BasicUser from "../components/BasicUser";
 import SubMenu from "../components/SubMenu";
 import { IDetailedUserResponse } from "../models/IDetailedUserResponse";
 import { initialDetailedUser } from "../initial-values/initial-values";
+import InterestList from "../components/InterestList";
 
 const UserView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
@@ -182,41 +182,48 @@ const UserView = () => {
     <div className="user-view">
       {renderCorrectSubMenu(otherUser.typeOfUser)}
       <h1>ANVÄNDARPROFIL</h1>
-
-      <p>
-        {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
-        {getUserDescription(otherUser.typeOfUser)}
-      </p>
-      <p>Email:</p>
-      <p>{otherUser.email}</p>
-      <p>Födelsedatum:</p>
-      <p>
-        {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age}) år
-      </p>
-      <p>Intressen:</p>
-      {otherUser.interests.length === 0 ? (
-        <p>Inga intressen tillagda än.</p>
-      ) : (
+      <div className="sub-section">
         <p>
-          {otherUser.interests.map((interest: IInterestResponse) => (
-            <span key={interest.id}>{interest.name} </span>
-          ))}
+          {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
+          {getUserDescription(otherUser.typeOfUser)}
         </p>
-      )}
-      <p>Om personen:</p>
-      {otherUser.typeOfUser !== TypeOfUser.Friend ? (
-        <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
-      ) : (
-        <p>{otherUser.personalInfo}</p>
-      )}
-      <p>Personens vänner:</p>
-      {otherUser.friends.length === 0 ? (
-        <p>Inga vänner</p>
-      ) : (
-        otherUser.friends.map((friend: IBasicUserResponse) => (
-          <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />
-        ))
-      )}
+      </div>
+      <div className="sub-section">
+        <p>Email:</p>
+        <p>{otherUser.email}</p>
+      </div>
+      <div className="sub-section">
+        <p>Födelsedatum:</p>
+        <p>
+          {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age}) år
+        </p>
+      </div>
+      <div className="sub-section">
+        <p>Intressen:</p>
+        {otherUser.interests.length === 0 ? (
+          <p>Inga intressen tillagda än.</p>
+        ) : (
+          <InterestList interests={otherUser.interests} />
+        )}
+      </div>
+      <div className="sub-section">
+        <p>Om personen:</p>
+        {otherUser.typeOfUser !== TypeOfUser.Friend ? (
+          <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
+        ) : (
+          <p>{otherUser.personalInfo}</p>
+        )}
+      </div>
+      <div className="sub-section">
+        <p>Personens vänner:</p>
+        {otherUser.friends.length === 0 ? (
+          <p>Inga vänner</p>
+        ) : (
+          otherUser.friends.map((friend: IBasicUserResponse) => (
+            <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />
+          ))
+        )}
+      </div>
     </div>
   );
 };

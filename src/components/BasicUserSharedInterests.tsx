@@ -6,7 +6,9 @@ const BasicUserSharedInterests = ({ id, firstName, lastName, sharedInterestsCoun
     <Link to={`/user/${id}`} className="basic-user-shared-interests">
       <div className="separate-data">
         <p>{`${firstName} ${lastName}`}</p>
-        <p>{sharedInterestsCount}</p>
+        <div className="separate-data-second-variable">
+          <p>{sharedInterestsCount}</p>
+        </div>
       </div>
     </Link>
   );

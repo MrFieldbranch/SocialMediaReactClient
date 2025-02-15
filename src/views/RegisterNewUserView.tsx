@@ -12,7 +12,7 @@ const RegisterNewUserView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean
   const [newPassword, setNewPassword] = useState<string>("");
   const [newFirstName, setNewFirstName] = useState<string>("");
   const [newLastName, setNewLastName] = useState<string>("");
-  const [newDateOfBirth, setNewDateOfBirth] = useState<string>("1900-01-01");
+  const [newDateOfBirth, setNewDateOfBirth] = useState<string>("1970-01-01");
   const [newSex, setNewSex] = useState<string>("Man");
   const [error, setError] = useState<string | null>(null);
 
@@ -73,29 +73,29 @@ const RegisterNewUserView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean
 
   return (
     <div className="register-new-user-view">
-      <h1>Registrera av ny användare</h1>
+      <h1>NY ANVÄNDARE</h1>
       <div>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email:</label>
         <input type="email" id="email" value={newEmail} required onChange={(e) => setNewEmail(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="password">Lösenord</label>
+        <label htmlFor="password">Lösenord:</label>
         <input type="password" id="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="firstname">Förnamn</label>
+        <label htmlFor="firstname">Förnamn:</label>
         <input type="text" id="firstname" value={newFirstName} required onChange={(e) => setNewFirstName(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="lastname">Efternamn</label>
+        <label htmlFor="lastname">Efternamn:</label>
         <input type="text" id="lastname" value={newLastName} required onChange={(e) => setNewLastName(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="dateofbirth">Födelsedatum</label>
+        <label htmlFor="dateofbirth">Födelsedatum:</label>
         <input type="date" id="dateofbirth" value={newDateOfBirth} required onChange={(e) => setNewDateOfBirth(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="sex"></label>
+        <label htmlFor="sex">Kön:</label>
         <select id="sex" value={newSex} onChange={(e) => setNewSex(e.target.value)}>
           <option value="Man">Man</option>
           <option value="Kvinna">Kvinna</option>

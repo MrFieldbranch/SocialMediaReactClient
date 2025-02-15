@@ -89,7 +89,9 @@ const StrangersView = () => {
           <>
             <div className="separate-data">
               <p>Namn</p>
-              <p>Antal gemensamma intressen</p>
+              <div className="separate-data-second-variable">
+                <p>Antal gemensamma intressen</p>
+              </div>
             </div>
             {strangersSorted.map((stranger: IUserWithSharedInterestsResponse) => (
               <BasicUserSharedInterests

@@ -94,23 +94,23 @@ const InterestsView = () => {
   if (location.pathname === "/interests")
     return (
       <div className="interests-view">
+        <SubMenu
+          items={[
+            {
+              label: "Mina intressen",
+              linkTo: "/interests/myinterests",
+            },
+            {
+              label: "Välj bland intressen som jag inte har",
+              linkTo: "/interests/notmyinterests",
+            },
+          ]}
+        />
         <h1>Alla intressen som communityn har lagt upp</h1>
         {interests.length === 0 ? (
           <p>Inga intressen finns än. Lägg gärna till ett!</p>
         ) : (
           <div>
-            <SubMenu
-              items={[
-                {
-                  label: "Mina intressen",
-                  linkTo: "/interests/myinterests",
-                },
-                {
-                  label: "Välj bland intressen som jag inte har",
-                  linkTo: "/interests/notmyinterests",
-                },
-              ]}
-            />
             <InterestList interests={interests} />
           </div>
         )}
@@ -128,7 +128,6 @@ const InterestsView = () => {
   if (location.pathname === "/interests/myinterests")
     return (
       <div className="interests-view">
-        <h1>Mina intressen</h1>
         <SubMenu
           items={[
             {
@@ -141,10 +140,11 @@ const InterestsView = () => {
             },
           ]}
         />
+        <h1>Mina intressen</h1>
         {interests.length === 0 ? (
           <p>Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
         ) : (
-          <InterestList interests={interests} onButtonClick={handleRemoveInterest} addOrRemove="Ta bort" color="red" />
+          <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="red" />
         )}
       </div>
     );
@@ -152,7 +152,6 @@ const InterestsView = () => {
   if (location.pathname === "/interests/notmyinterests")
     return (
       <div className="interests-view">
-        <h1>Intressen som jag inte har</h1>
         <SubMenu
           items={[
             {
@@ -165,10 +164,11 @@ const InterestsView = () => {
             },
           ]}
         />
+        <h1>Intressen som jag inte har</h1>
         {interests.length === 0 ? (
           <p>Det finns inga intressen i systemet som du inte redan har.</p>
         ) : (
-          <InterestList interests={interests} onButtonClick={handleAddInterest} addOrRemove="Lägg till" color="green" />
+          <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="lightgreen" />
         )}
       </div>
     );
