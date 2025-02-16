@@ -49,7 +49,7 @@ const AllFriendRequestsView = () => {
     <div className="all-friend-requests-view">
       <h1>VÄNFÖRFRÅGNINGAR</h1>
 
-      <section className="friend-requests-section">
+      <section className="sub-section">
         <h2>{`Till mig (${pendingToMe.length})`}</h2>
 
         {pendingToMe.length === 0 ? (
@@ -73,7 +73,7 @@ const AllFriendRequestsView = () => {
         )}
       </section>
 
-      <section className="friend-requests-section">
+      <section className="sub-section">
         <h2>{`Som jag har skickat (${pendingFromMe.length})`}</h2>
 
         {pendingFromMe.length === 0 ? (

@@ -82,7 +82,7 @@ const StrangersView = () => {
     return (
       <div className="strangers-sorted-view">
         <SubMenu items={[{ label: "Gå tillbaka till osorterad vy", linkTo: "/strangers" }]} />
-        <h1>MÖJLIGA VÄNNER (sorterade efter antal gemensamma intressen med dig)</h1>
+        <h1>MÖJLIGA VÄNNER</h1>
         {strangersSorted.length === 0 ? (
           <p>Det finns inga andra användare som har något intresse gemensamt med dig</p>
         ) : (

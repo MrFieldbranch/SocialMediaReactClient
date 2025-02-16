@@ -71,13 +71,13 @@ const PublicBoardView = () => {
 
   return (
     <div className="public-board-view">
-      <h1>Anslagstavlan</h1>
+      <h1>ANSLAGSTAVLAN</h1>
       {allPosts.length === 0 ? (
         <p>Inga inlägg finns än. Skriv gärna ett!</p>
       ) : (
-        <div>
+        <div className="message-list">
           {allPosts.map((post: IPostToPublicBoardResponse) => (
-            <div key={post.id}>
+            <div key={post.id} className={`message ${post.user.id === loggedInUserId ? "message-left" : "message-right"}`}>
               <p>
                 {post.user.id === loggedInUserId ? "Du" : `${post.user.firstName} ${post.user.lastName}`} skrev{" "}
                 {new Date(post.createdAt).toLocaleDateString("sv-SE")}, kl{" "}
@@ -86,7 +86,7 @@ const PublicBoardView = () => {
                   minute: "2-digit",
                 })}
               </p>
-              <p>{post.title}</p>
+              <h4>{post.title}</h4>
               <p>{post.content}</p>
             </div>
           ))}

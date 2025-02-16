@@ -189,25 +189,21 @@ const UserView = () => {
         </p>
       </div>
       <div className="sub-section">
-        <p>Email:</p>
+        <h4>Email:</h4>
         <p>{otherUser.email}</p>
       </div>
       <div className="sub-section">
-        <p>Födelsedatum:</p>
+        <h4>Födelsedatum:</h4>
         <p>
-          {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age}) år
+          {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age} år)
         </p>
       </div>
       <div className="sub-section">
-        <p>Intressen:</p>
-        {otherUser.interests.length === 0 ? (
-          <p>Inga intressen tillagda än.</p>
-        ) : (
-          <InterestList interests={otherUser.interests} />
-        )}
+        <h4>Intressen:</h4>
+        {otherUser.interests.length === 0 ? <p>Inga intressen tillagda än.</p> : <InterestList interests={otherUser.interests} />}
       </div>
       <div className="sub-section">
-        <p>Om personen:</p>
+        <h4>Om personen:</h4>
         {otherUser.typeOfUser !== TypeOfUser.Friend ? (
           <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
         ) : (
@@ -215,7 +211,7 @@ const UserView = () => {
         )}
       </div>
       <div className="sub-section">
-        <p>Personens vänner:</p>
+        <h4>Personens vänner:</h4>
         {otherUser.friends.length === 0 ? (
           <p>Inga vänner</p>
         ) : (

@@ -77,7 +77,7 @@ const ConversationView = () => {
 
   return (
     <div className="conversation-view">
-      <h1>KONVERSATIONSVY</h1>
+      <h1>KONVERSATION</h1>
       <h3>
         Mellan dig och {firstName} {lastName}
       </h3>
@@ -85,9 +85,11 @@ const ConversationView = () => {
       {conversation === null ? (
         <p>Inga meddelanden än.</p>
       ) : (
-        <div>
+        <div className="message-list">
           {conversation.messages.map((message: IMessageResponse) => (
-            <div key={message.id}>
+            <div 
+				key={message.id} 
+				className={`message ${message.senderId === otherUserId ? "message-right" : "message-left"}`}>
               <p>
                 {message.senderId === otherUserId ? `${firstName} ${lastName}` : "Du"} skrev{" "}
                 {new Date(message.sentAt).toLocaleDateString("sv-SE")}, kl{" "}

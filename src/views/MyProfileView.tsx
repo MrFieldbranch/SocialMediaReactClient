@@ -76,17 +76,17 @@ const MyProfileView = () => {
       </div>
 
       <div className="sub-section">
-        <p>Email:</p>
+        <h4>Email:</h4>
         <p>{myUser.email}</p>
       </div>
       <div className="sub-section">
-        <p>Födelsedatum:</p>
+        <h4>Födelsedatum:</h4>
         <p>
           {new Date(myUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({myUser.age} år)
         </p>
       </div>
       <div className="sub-section">
-        <p>Mina intressen:</p>
+        <h4>Mina intressen:</h4>
         {myUser.interests.length === 0 ? (
           <p>Inga intressen tillagda än.</p>
         ) : (
@@ -95,7 +95,7 @@ const MyProfileView = () => {
       </div>
 
       <div className="sub-section">
-        <p>Om mig:</p>
+        <h4>Om mig:</h4>
 
         {!isEditMode && (
           <div>

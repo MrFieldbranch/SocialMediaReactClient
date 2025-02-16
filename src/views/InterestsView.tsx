@@ -106,7 +106,7 @@ const InterestsView = () => {
             },
           ]}
         />
-        <h1>Alla intressen som communityn har lagt upp</h1>
+        <h1>ALLA INTRESSEN</h1>
         {interests.length === 0 ? (
           <p>Inga intressen finns än. Lägg gärna till ett!</p>
         ) : (
@@ -140,11 +140,11 @@ const InterestsView = () => {
             },
           ]}
         />
-        <h1>Mina intressen</h1>
+        <h1>MINA INTRESSEN</h1>
         {interests.length === 0 ? (
           <p>Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
         ) : (
-          <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="red" />
+          <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="#E74C3C" />
         )}
       </div>
     );
@@ -164,11 +164,11 @@ const InterestsView = () => {
             },
           ]}
         />
-        <h1>Intressen som jag inte har</h1>
+        <h1>INTRESSEN SOM JAG INTE HAR</h1>
         {interests.length === 0 ? (
           <p>Det finns inga intressen i systemet som du inte redan har.</p>
         ) : (
-          <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="lightgreen" />
+          <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="#4CAF50" />
         )}
       </div>
     );
