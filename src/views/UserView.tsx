@@ -172,7 +172,17 @@ const UserView = () => {
     else return "OKÄND STATUS";
   };
 
-  if (error) return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setError(null);
+  }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar användarprofilen...</p>;
@@ -189,29 +199,29 @@ const UserView = () => {
         </p>
       </div>
       <div className="sub-section">
-        <h4>Email:</h4>
+        <h2>Email:</h2>
         <p>{otherUser.email}</p>
       </div>
       <div className="sub-section">
-        <h4>Födelsedatum:</h4>
+        <h2>Födelsedatum:</h2>
         <p>
           {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age} år)
         </p>
       </div>
       <div className="sub-section">
-        <h4>Intressen:</h4>
+        <h2>Intressen:</h2>
         {otherUser.interests.length === 0 ? <p>Inga intressen tillagda än.</p> : <InterestList interests={otherUser.interests} />}
       </div>
       <div className="sub-section">
-        <h4>Om personen:</h4>
+        <h2>Om personen:</h2>
         {otherUser.typeOfUser !== TypeOfUser.Friend ? (
           <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
         ) : (
-          <p>{otherUser.personalInfo}</p>
+          <p>{otherUser.personalInfo || "Inget skrivet än"}</p>
         )}
       </div>
       <div className="sub-section">
-        <h4>Personens vänner:</h4>
+        <h2>Personens vänner:</h2>
         {otherUser.friends.length === 0 ? (
           <p>Inga vänner</p>
         ) : (

@@ -21,27 +21,27 @@ const MyProfileView = () => {
       try {
         const response = await socialMediaApiService.getMyselfAsync(abortCont.signal);
         if (!abortCont.signal.aborted) {
-          setMyUser(response);          
+          setMyUser(response);
           setError(null);
         }
       } catch (err: any) {
-        if (err.name !== "AbortError") {          
+        if (err.name !== "AbortError") {
           setError(err.message || "An unknown error occurred.");
         }
       } finally {
-		setIsLoading(false);
-	  }
+        setIsLoading(false);
+      }
     };
 
     fetchMyUser();
 
     return () => abortCont.abort();
-  }, [useEffectTrigger]);    
+  }, [useEffectTrigger]);
 
   const handleEditMode = () => {
-	setIsEditMode(true);
-	setNewText(myUser.personalInfo ?? "");
-  }
+    setIsEditMode(true);
+    setNewText(myUser.personalInfo ?? "");
+  };
 
   const handleSavePersonalInfo = async (newText: string) => {
     const updatedPersonalInfo = newText.trim() === "" ? null : newText;
@@ -50,7 +50,7 @@ const MyProfileView = () => {
     };
     try {
       await socialMediaApiService.updatePersonalInfoAsync(request);
-	  setUseEffectTrigger((prev) => prev + 1);
+      setUseEffectTrigger((prev) => prev + 1);
     } catch (err: any) {
       setError(err.message || "An unknown error occurred.");
     } finally {
@@ -58,9 +58,18 @@ const MyProfileView = () => {
     }
   };
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setNewText(myUser.personalInfo ?? "");
+	setError(null);
   }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar din profil...</p>;
@@ -76,26 +85,22 @@ const MyProfileView = () => {
       </div>
 
       <div className="sub-section">
-        <h4>Email:</h4>
+        <h2>Email:</h2>
         <p>{myUser.email}</p>
       </div>
       <div className="sub-section">
-        <h4>Födelsedatum:</h4>
+        <h2>Födelsedatum:</h2>
         <p>
           {new Date(myUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({myUser.age} år)
         </p>
       </div>
       <div className="sub-section">
-        <h4>Mina intressen:</h4>
-        {myUser.interests.length === 0 ? (
-          <p>Inga intressen tillagda än.</p>
-        ) : (
-          <InterestList interests={myUser.interests} />
-        )}
+        <h2>Mina intressen:</h2>
+        {myUser.interests.length === 0 ? <p>Inga intressen tillagda än.</p> : <InterestList interests={myUser.interests} />}
       </div>
 
       <div className="sub-section">
-        <h4>Om mig:</h4>
+        <h2>Om mig:</h2>
 
         {!isEditMode && (
           <div>
@@ -110,7 +115,7 @@ const MyProfileView = () => {
         {isEditMode && (
           <div>
             <textarea value={newText} rows={5} onChange={(e) => setNewText(e.target.value)} />
-            <div>
+            <div className="confirm-or-cancel">
               <button onClick={() => handleSavePersonalInfo(newText)}>Spara</button>
               <button onClick={() => setIsEditMode(false)}>Avbryt</button>
             </div>

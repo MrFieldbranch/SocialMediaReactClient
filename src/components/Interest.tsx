@@ -6,8 +6,7 @@ const Interest = ({ id, name, onButtonClick, color, buttonText }: InterestProps)
       <p>{name}</p>
       {onButtonClick && (
         <button 
-			onClick={() => onButtonClick(id)} 
-			className="interest-button" 
+			onClick={() => onButtonClick(id)} 			
 			style={{ "--hover-bg-color": color } as React.CSSProperties}>
           {buttonText}
         </button>

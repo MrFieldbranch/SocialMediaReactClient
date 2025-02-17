@@ -47,9 +47,17 @@ const StrangersView = () => {
     return () => abortCont.abort();
   }, [location.pathname]);
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setError(null);
   }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar möjliga vänner...</p>;

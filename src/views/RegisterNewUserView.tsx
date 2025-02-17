@@ -67,9 +67,23 @@ const RegisterNewUserView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean
     }
   };
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setNewEmail("");
+	setNewPassword("");
+	setNewFirstName("");
+	setNewLastName("");
+	setNewDateOfBirth("1970-01-01");
+	setNewSex("Man");
+	setError(null);
   }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   return (
     <div className="register-new-user-view">

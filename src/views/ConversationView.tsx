@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { IConversationResponse } from "../models/IConversationResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
 import { IMessageRequest } from "../models/IMessageRequest";
 import { IMessageResponse } from "../models/IMessageResponse";
-
 
 const ConversationView = () => {
   const { id } = useParams<{ id: string }>(); // Get the id from URL
@@ -20,6 +19,8 @@ const ConversationView = () => {
   const [newMessage, setNewMessage] = useState<string>("");
   const [useEffectTrigger, setUseEffectTrigger] = useState<number>(1);
 
+  const endOfPageRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const abortCont = new AbortController();
 
@@ -28,23 +29,24 @@ const ConversationView = () => {
         const response = await socialMediaApiService.getConversationAsync(otherUserId, abortCont.signal);
         if (!abortCont.signal.aborted) {
           setConversation(response);
-		  setError(null);
+          setError(null);
         }
       } catch (err: any) {
         if (err.name !== "AbortError") {
           setError(err.message || "An unknown error occurred.");
         }
       } finally {
-		setIsLoading(false);
-	  }
+        setIsLoading(false);
+        setTimeout(() => {
+          endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 0);
+      }
     };
 
     fetchConversation();
 
     return () => abortCont.abort();
   }, [useEffectTrigger]);
-
-   
 
   const handleSendMessage = async (newMessage: string) => {
     if (newMessage.trim() === "") {
@@ -57,39 +59,55 @@ const ConversationView = () => {
 
       try {
         await socialMediaApiService.sendMessageAsync(otherUserId, request);
-		setUseEffectTrigger((prev) => prev + 1);
+        setUseEffectTrigger((prev) => prev + 1);
       } catch (err: any) {
         setError(err.message || "An unknown error occurred.");
       } finally {
-		setNewMessage("");
+        setNewMessage("");
         setIsNewMessageMode(false);
       }
     }
   };
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleOpenMessageBox = () => {
+	setIsNewMessageMode(true);
+	setTimeout(() => {
+          endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 0);
   }
+
+  const handleError = () => {
+    setError(null);
+	setTimeout(() => {
+    endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, 0);
+  };
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar konversationen...</p>;
-  } 
+  }
 
   return (
     <div className="conversation-view">
       <h1>KONVERSATION</h1>
-      <h3>
+      <h2>
         Mellan dig och {firstName} {lastName}
-      </h3>
+      </h2>
 
       {conversation === null ? (
         <p>Inga meddelanden än.</p>
       ) : (
         <div className="message-list">
           {conversation.messages.map((message: IMessageResponse) => (
-            <div 
-				key={message.id} 
-				className={`message ${message.senderId === otherUserId ? "message-right" : "message-left"}`}>
+            <div key={message.id} className={`message ${message.senderId === otherUserId ? "message-right" : "message-left"}`}>
               <p>
                 {message.senderId === otherUserId ? `${firstName} ${lastName}` : "Du"} skrev{" "}
                 {new Date(message.sentAt).toLocaleDateString("sv-SE")}, kl{" "}
@@ -106,19 +124,23 @@ const ConversationView = () => {
 
       {!isNewMessageMode && (
         <div>
-          <button onClick={() => setIsNewMessageMode(true)}>Skriv nytt meddelande</button>
+          <button className="write-new" onClick={handleOpenMessageBox}>
+            Skriv nytt meddelande
+          </button>
         </div>
       )}
       {isNewMessageMode && (
-        <div>
-          <textarea rows={5} onChange={(e) => setNewMessage(e.target.value)} />
-          <div>
+        <div className="write-new">
+          <textarea required onChange={(e) => setNewMessage(e.target.value)} />
+          <div className="confirm-or-cancel">
             <button onClick={() => handleSendMessage(newMessage)}>Skicka</button>
             <button onClick={() => setIsNewMessageMode(false)}>Avbryt</button>
           </div>
         </div>
       )}
+	  <div ref={endOfPageRef} />
     </div>
+	
   );
 };
 

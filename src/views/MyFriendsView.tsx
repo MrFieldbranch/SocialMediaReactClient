@@ -32,9 +32,17 @@ const MyFriendsView = () => {
 	return () => abortCont.abort();
   }, []);
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setError(null);
   }
+
+ if (error)
+   return (
+     <div className="error-message">
+       <p>{error}</p>
+       <button onClick={handleError}>Tillbaka</button>
+     </div>
+   );
 
   if (isLoading) {
     return <p>Laddar din vänlista...</p>;

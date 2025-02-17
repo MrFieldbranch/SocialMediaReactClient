@@ -83,9 +83,18 @@ const InterestsView = () => {
     }
   };
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleError = () => {
+	setNewInterest("");
+	setError(null);
   }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar intressen...</p>;

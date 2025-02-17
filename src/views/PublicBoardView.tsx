@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IPostToPublicBoardResponse } from "../models/IPostToPublicBoardResponse";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
 import { IPostToPublicBoardRequest } from "../models/IPostToPublicBoardRequest";
@@ -13,6 +13,8 @@ const PublicBoardView = () => {
   const [newPostTitle, setNewPostTitle] = useState<string>("");
   const [newPostContent, setNewPostContent] = useState<string>("");
   const [useEffectTrigger, setUseEffectTrigger] = useState<number>(1);
+
+  const endOfPageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const abortCont = new AbortController();
@@ -30,6 +32,9 @@ const PublicBoardView = () => {
         }
       } finally {
         setIsLoading(false);
+		setTimeout(() => {
+			endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+		}, 0);		
       }
     };
 
@@ -61,9 +66,27 @@ const PublicBoardView = () => {
     }
   };
 
-  if (error) {
-    return <p className="error-message">{error}</p>;
+  const handleOpenMessageBox = () => {
+	setIsNewPostMode(true);
+	setTimeout(() => {
+    endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, 0);
   }
+
+  const handleError = () => {
+	setError(null);
+	setTimeout(() => {
+    endOfPageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, 0);
+  }
+
+  if (error)
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <button onClick={handleError}>Tillbaka</button>
+      </div>
+    );
 
   if (isLoading) {
     return <p>Laddar inläggen...</p>;
@@ -86,7 +109,7 @@ const PublicBoardView = () => {
                   minute: "2-digit",
                 })}
               </p>
-              <h4>{post.title}</h4>
+              <h2>{post.title}</h2>
               <p>{post.content}</p>
             </div>
           ))}
@@ -95,25 +118,28 @@ const PublicBoardView = () => {
 
       {!isNewPostMode && (
         <div>
-          <button onClick={() => setIsNewPostMode(true)}>Skriv ett inlägg</button>
+          <button className="write-new" onClick={handleOpenMessageBox}>
+            Skriv ett inlägg
+          </button>
         </div>
       )}
       {isNewPostMode && (
-        <div>
-          <div>
+        <div className="write-new">
+          <div className="label-and-input">
             <label htmlFor="title">Titel</label>
             <input type="text" id="title" required onChange={(e) => setNewPostTitle(e.target.value)} />
           </div>
-          <div>
+          <div className="label-and-input">
             <label htmlFor="content">Inlägg</label>
-            <textarea id="content" required rows={5} onChange={(e) => setNewPostContent(e.target.value)} />
+            <textarea id="content" required onChange={(e) => setNewPostContent(e.target.value)} />
           </div>
-          <div>
+          <div className="confirm-or-cancel">
             <button onClick={() => handleSendPost(newPostTitle, newPostContent)}>Skicka</button>
             <button onClick={() => setIsNewPostMode(false)}>Avbryt</button>
           </div>
         </div>
       )}
+      <div ref={endOfPageRef} />
     </div>
   );
 };

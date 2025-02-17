@@ -22,17 +22,3 @@ const SubMenu = ({ items }: ISubMenuProps) => {
 };
 
 export default SubMenu;
-
-{/* <section className="sub-menu">
-  {items.map((item, index) => (
-    <button key={index} onClick={item.onClick}>
-      {item.linkTo ? (
-        <Link to={item.linkTo} state={item.optionalProps}>
-          {item.label}
-        </Link>
-      ) : (
-        item.label
-      )}
-    </button>
-  ))}
-</section>; */}
