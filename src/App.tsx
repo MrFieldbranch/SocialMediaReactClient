@@ -27,7 +27,7 @@ const App = () => {
       setIsLoggedIn(true);
       navigate("/myprofile");
     }
-  }, []);
+  }, []);  
 
   return (
     <div className="main-container">

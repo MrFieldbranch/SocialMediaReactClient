@@ -463,5 +463,6 @@ export class SocialMediaApiService {
   }
 }
 
-const socialMediaApiService = new SocialMediaApiService("https://localhost:8000"); /* Singleton */
+const apiUrl = import.meta.env.VITE_API_URL;
+const socialMediaApiService = new SocialMediaApiService(apiUrl); /* Singleton */
 export default socialMediaApiService;
