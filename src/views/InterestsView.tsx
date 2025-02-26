@@ -125,10 +125,12 @@ const InterestsView = () => {
         )}
         {!isNewInterestMode && <button onClick={() => setIsNewInterestMode(true)}>Skapa ett intresse</button>}
         {isNewInterestMode && (
-          <div>
+          <div className="write-new">
             <input type="text" required onChange={(e) => setNewInterest(e.target.value)} />
-            <button onClick={() => handleCreateNewInterest(newInterest)}>Spara</button>
-            <button onClick={() => setIsNewInterestMode(false)}>Avbryt</button>
+            <div className="confirm-or-cancel">
+              <button onClick={() => handleCreateNewInterest(newInterest)}>Spara</button>
+              <button onClick={() => setIsNewInterestMode(false)}>Avbryt</button>
+            </div>
           </div>
         )}
       </div>

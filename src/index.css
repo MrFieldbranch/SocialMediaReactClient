@@ -311,6 +311,10 @@ select {
 	margin: 0;
 }
 
+.interests-view input {
+	width: 40rem;
+}
+
 .label-and-input {
 	display: flex;
 	flex-direction: column;
