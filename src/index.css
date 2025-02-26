@@ -313,6 +313,8 @@ select {
 
 .interests-view input {
 	width: 40rem;
+	height: 4rem;
+	margin: 0;
 }
 
 .label-and-input {
