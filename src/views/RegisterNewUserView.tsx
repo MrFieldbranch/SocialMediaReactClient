@@ -86,38 +86,40 @@ const RegisterNewUserView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean
     );
 
   return (
-    <div className="register-new-user-view">
-      <h1>NY ANVÄNDARE</h1>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" value={newEmail} required onChange={(e) => setNewEmail(e.target.value)} />
+    <div className="box">
+      <div className="login-or-register">
+        <h1>NY ANVÄNDARE</h1>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" value={newEmail} required onChange={(e) => setNewEmail(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="password">Lösenord:</label>
+          <input type="password" id="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="firstname">Förnamn:</label>
+          <input type="text" id="firstname" value={newFirstName} required onChange={(e) => setNewFirstName(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="lastname">Efternamn:</label>
+          <input type="text" id="lastname" value={newLastName} required onChange={(e) => setNewLastName(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="dateofbirth">Födelsedatum:</label>
+          <input type="date" id="dateofbirth" value={newDateOfBirth} required onChange={(e) => setNewDateOfBirth(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="sex">Kön:</label>
+          <select id="sex" value={newSex} onChange={(e) => setNewSex(e.target.value)}>
+            <option value="Man">Man</option>
+            <option value="Kvinna">Kvinna</option>
+          </select>
+        </div>
+        <button onClick={() => handleRegisterAndLogin(newEmail, newPassword, newFirstName, newLastName, newDateOfBirth, newSex)}>
+          Registrera dig
+        </button>
       </div>
-      <div>
-        <label htmlFor="password">Lösenord:</label>
-        <input type="password" id="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="firstname">Förnamn:</label>
-        <input type="text" id="firstname" value={newFirstName} required onChange={(e) => setNewFirstName(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="lastname">Efternamn:</label>
-        <input type="text" id="lastname" value={newLastName} required onChange={(e) => setNewLastName(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="dateofbirth">Födelsedatum:</label>
-        <input type="date" id="dateofbirth" value={newDateOfBirth} required onChange={(e) => setNewDateOfBirth(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="sex">Kön:</label>
-        <select id="sex" value={newSex} onChange={(e) => setNewSex(e.target.value)}>
-          <option value="Man">Man</option>
-          <option value="Kvinna">Kvinna</option>
-        </select>
-      </div>
-      <button onClick={() => handleRegisterAndLogin(newEmail, newPassword, newFirstName, newLastName, newDateOfBirth, newSex)}>
-        Registrera dig
-      </button>
     </div>
   );
 };

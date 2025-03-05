@@ -12,11 +12,13 @@ const StartView = () => {
   };
 
   return (
-    <div className="start-view">
-      <h1>Joelbook</h1>
-      <div className="login-or-register">
-        <button onClick={goToLoginView}>Logga in</button>
-        <button onClick={goToRegisterNewUserView}>Registrera dig</button>
+    <div className="box">
+      <div className="start-view">
+        <h1>Joelbook</h1>
+        <div className="start-view-choices">
+          <button onClick={goToLoginView}>Logga in</button>
+          <button onClick={goToRegisterNewUserView}>Registrera dig</button>
+        </div>
       </div>
     </div>
   );

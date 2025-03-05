@@ -193,10 +193,10 @@ const UserView = () => {
       {renderCorrectSubMenu(otherUser.typeOfUser)}
       <h1>ANVÄNDARPROFIL</h1>
       <div className="sub-section">
-        <p>
+        <h2>
           {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
           {getUserDescription(otherUser.typeOfUser)}
-        </p>
+        </h2>
       </div>
       <div className="sub-section">
         <h2>Email:</h2>

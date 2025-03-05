@@ -17,7 +17,7 @@ body {
 
 .main-container {
   margin: 0 auto;
-  width: 80%;
+  width: 70%;
   padding-top: 5rem; /* Same as nav height */
 }
 
@@ -136,76 +136,60 @@ p {
 }
 
 .start-view {
-  margin-top: 20rem;
+  /* margin-top: 20rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .start-view h1 {
-  font-size: 8rem;
-  margin: 0 0 1.5rem 0;
+  font-size: 10rem;
+  margin: 0 0 5rem 0;
+}
+
+.start-view-choices {
+	width: 22rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.box {
+	margin: auto;
+	margin-top: 5rem;
+	width: 70rem;
+	padding: 10rem 0;
+	border: 2px solid #e1e0e0;
+	border-radius: 2rem;
+	background-color: rgba(211, 211, 211, 0.3);
+	/* background-color: rgb(218, 238, 240); */
 }
 
 .login-or-register {
-  width: 20rem;
+  margin: auto;  
+  width: 30rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;  
+  gap: 2rem;
 }
 
-.login-or-register button {
-  font-size: 1.5rem;
+.login-or-register div {	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.login-view {
-  margin-top: 20rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.login-or-register h1 {
+	margin: auto;
 }
 
-.login-view h1 {
-  margin: 1rem auto;
+.login-or-register label {
+	font-size: 1.5rem;
 }
 
-.login-view form {
-  display: flex;
-  flex-direction: column;
-  min-width: 22rem;
-}
-
-.login-view button {
-  margin: auto;
-}
-
-.login-view div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.register-new-user-view {
-  margin-top: 20rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.register-new-user-view h1 {
-  margin: 1rem auto;
-}
-
-.register-new-user-view div {
-  margin: auto;
-  width: 29rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.register-new-user-view button {
-  margin: auto;
+.login-or-register input, .login-or-register select {
+	height: 2.5rem;
+	border: none;
+	border-radius: 0.4rem;
 }
 
 input {
@@ -245,10 +229,12 @@ select {
 }
 
 .item button:hover {
-	background-color: var(--hover-bg-color);
+  background-color: var(--hover-bg-color);
 }
 
 .sub-section {
+  min-height: 5rem;
+  padding: 1rem 0;
   border-bottom: 1px solid #e1e0e0;
 }
 
@@ -268,12 +254,11 @@ select {
 .message-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  /* padding: 2rem; */
+  gap: 1rem;  
 }
 
 .message {
-  max-width: 60%;
+  max-width: 40%;
   padding: 1rem 1rem 0 1rem;
   /* padding: 1rem; */
   border-radius: 0.8rem;
@@ -291,51 +276,51 @@ select {
 }
 
 .conversation-view textarea {
-	width: 40rem;
-	height: 12rem;
+  width: 40rem;
+  height: 12rem;
 }
 
 .confirm-or-cancel {
-	width: 40rem;
-	display: flex;
-	justify-content: space-between;
+  width: 40rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .public-board-view textarea {
-	width: 40rem;
-	height: 12rem;
+  width: 40rem;
+  height: 12rem;
 }
 
 .public-board-view input {
-	width: 40rem;
-	margin: 0;
+  width: 40rem;
+  margin: 0;
 }
 
 .interests-view input {
-	width: 40rem;
-	height: 3rem;
-	margin: 0 0 0.7rem 0;	
+  width: 40rem;
+  height: 3rem;
+  margin: 0 0 0.7rem 0;
 }
 
 .label-and-input {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.7rem;
 }
 
 .my-profile-view textarea {
-	width: 40rem;
-	height: 12rem;
+  width: 40rem;
+  height: 12rem;
 }
 
 .error-message {
-	margin-top: 20rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  margin-top: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .write-new {
-	margin-top: 2rem;
+  margin-top: 2rem;
 }

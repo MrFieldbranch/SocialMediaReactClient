@@ -79,9 +79,9 @@ const MyProfileView = () => {
     <div className="my-profile-view">
       <h1>MIN PROFIL</h1>
       <div className="sub-section">
-        <p>
+        <h2>
           {myUser.firstName} {myUser.lastName}, ({myUser.sex === Sex.Male ? "Man" : "Kvinna"})
-        </p>
+        </h2>
       </div>
 
       <div className="sub-section">

@@ -11,9 +11,7 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleLogin = async (email: string, password: string) => {
     try {
       const loginRequest: ILoginRequest = { email, password };
       const loginResponse = await socialMediaApiService.loginAsync(loginRequest);
@@ -29,23 +27,23 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
   };
 
   const handleError = () => {
-	setEmail("");
-	setPassword("");
-	setError(null);
-  }
+    setEmail("");
+    setPassword("");
+    setError(null);
+  };
 
   if (error)
     return (
       <div className="error-message">
         <p>{error}</p>
-		<button onClick={handleError}>Tillbaka</button>
+        <button onClick={handleError}>Tillbaka</button>
       </div>
     );
 
   return (
-    <div className="login-view">
-      <h1>LOGGA IN</h1>
-      <form onSubmit={handleLogin}>
+    <div className="box">
+      <div className="login-or-register">
+        <h1>LOGGA IN</h1>
         <div>
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -54,8 +52,8 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
           <label htmlFor="password">Lösenord:</label>
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit">Logga in</button>
-      </form>
+        <button onClick={() => handleLogin(email, password)}>Logga in</button>
+      </div>
     </div>
   );
 };
