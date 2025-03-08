@@ -6,8 +6,8 @@ const BasicUserFriendRequest = ({ id, firstName, lastName, requestedAt }: IPendi
   const requestDate = new Date(requestedAt);
 
   return (
-    <Link to={`/user/${id}`} className="basic-user-friend-request">
-      <div className="separate-data">
+    <Link to={`/user/${id}`}>
+      <div className="separate-data basic-user">
         <p>{`${firstName} ${lastName}`}</p>
         <p>
           {`${requestDate.toLocaleDateString(

@@ -7,8 +7,8 @@ const BasicUser = ({ id, firstName, lastName }: IBasicUserResponse) => {
   const profileLink = id === loggedInUserId ? "/myprofile" : `/user/${id}`;
 
   return (
-    <Link to={profileLink} className="basic-user">
-      <p>{`${firstName} ${lastName}`}</p>
+    <Link to={profileLink}>
+      <p className="basic-user">{`${firstName} ${lastName}`}</p>
     </Link>
   );
 };

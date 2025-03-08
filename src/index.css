@@ -22,7 +22,7 @@ body {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 3rem;
   margin: 1rem 0;
 }
 
@@ -94,13 +94,13 @@ nav {
   width: 100vw;
   height: 5rem;
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: space-between;
   align-items: center;
   z-index: 1000;
   background-color: #333;
-  /* background-color: #161537;  */
-  /* background-color: #343a40; */
   color: #fff;
+  padding: 0 8% 0 3%;
 }
 
 nav button {
@@ -108,8 +108,10 @@ nav button {
 }
 
 .nav-links {
-  margin: 0rem 10rem 0rem 40rem;
-  min-width: 70rem;
+  /* margin: 0rem 10rem 0rem 40rem; */
+  margin: 0 5% 0 10%;
+  /* min-width: 70rem; */
+  width: 55%;
   display: flex;
   justify-content: space-between;
 }
@@ -123,11 +125,25 @@ nav button {
   color: #c3cbcf;
 }
 
+nav img {
+  display: none;
+}
+
 input,
 textarea,
 select,
 button {
   font-family: inherit;
+  font-size: 1.5rem;
+}
+
+select:focus,
+select:focus-visible,
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: 2px solid #535bf2;
 }
 
 p {
@@ -136,7 +152,7 @@ p {
 }
 
 .start-view {
-  /* margin-top: 20rem; */
+  margin-top: 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,52 +160,58 @@ p {
 
 .start-view h1 {
   font-size: 10rem;
-  margin: 0 0 5rem 0;
+  margin: 0 0 3rem 0;
 }
 
 .start-view-choices {
-	width: 22rem;
-	display: flex;
-	justify-content: space-between;
+  width: 22rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .box {
-	margin: auto;
-	margin-top: 5rem;
-	width: 70rem;
-	padding: 10rem 0;
-	border: 2px solid #e1e0e0;
-	border-radius: 2rem;
-	background-color: rgba(211, 211, 211, 0.3);
-	/* background-color: rgb(218, 238, 240); */
+  margin: auto;
+  margin-top: 1rem;
+  width: 55vw;
+  padding: 5rem 0;
+  border: 2px solid #e1e0e0;
+  border-radius: 2rem;
+  background-color: rgba(211, 211, 211, 0.3);
 }
 
-.login-or-register {
-  margin: auto;  
+.login,
+.register {
+  margin: auto;
   width: 30rem;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   gap: 2rem;
 }
 
-.login-or-register div {	
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.login div,
+.register div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.login-or-register h1 {
-	margin: auto;
+.login h1,
+.register h1 {
+  margin: auto;
 }
 
-.login-or-register label {
-	font-size: 1.5rem;
+.login label,
+.register label {
+  font-size: 1.5rem;
 }
 
-.login-or-register input, .login-or-register select {
-	height: 2.5rem;
-	border: none;
-	border-radius: 0.4rem;
+.login input,
+.register input,
+.login select,
+.register select {
+  height: 2.5rem;
+  border: none;
+  border-radius: 0.4rem;
 }
 
 input {
@@ -223,9 +245,10 @@ select {
 .item button {
   background-color: inherit; /* Default background */ /* Kanske ta bort */
   transition: background-color 0.2s ease-in-out; /* Smooth effect */
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: #333;
   margin-bottom: 0;
+  margin-left: 1rem;
 }
 
 .item button:hover {
@@ -251,10 +274,14 @@ select {
   align-items: center;
 }
 
+.basic-user {
+  margin: 2.5rem 0;
+}
+
 .message-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;  
+  gap: 1rem;
 }
 
 .message {
@@ -302,7 +329,7 @@ select {
   margin: 0 0 0.7rem 0;
 }
 
-.label-and-input {
+.label-and-input-public-board {
   display: flex;
   flex-direction: column;
   margin-bottom: 0.7rem;
@@ -323,4 +350,159 @@ select {
 
 .write-new {
   margin-top: 2rem;
+}
+
+.hamburger-menu-open {
+  display: none;
+}
+
+@media (max-width: 1150px) {
+  html {
+    font-size: 8px;
+  }
+
+  .login,
+  .register {
+    width: 60%;
+  }
+
+  .login input,
+  .login select,
+  .register input,
+  .register select {
+    width: 70%;
+  }
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 6px;
+  }
+
+  .main-container {
+    width: 80%;
+  }
+
+  .login label,
+  .register label {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    font-size: 5px;
+  }
+
+  .main-container {
+    width: 85%;
+  }
+}
+
+@media (max-width: 550px) {
+  .main-container {
+    width: 90%;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  nav > button {
+    display: none;
+  }
+
+  nav img {
+    display: block;
+    width: 3rem;
+  }
+
+  nav img:hover {
+    cursor: pointer;
+  }
+
+  .hamburger-menu-open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f4f7f8;
+    display: flex;
+    flex-direction: column;
+    z-index: 2000;
+    padding: 0 3rem;
+  }
+
+  .hamburger-menu-open a {
+    color: #333;
+    font-size: 3rem;
+  }
+
+  .button-to-the-right {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem 0;
+  }
+
+  .button-to-the-right button {
+    background-color: inherit;
+    color: #333;
+    font-size: 3rem;
+    padding-right: 0;
+  }
+
+  .mobile-view-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .mobile-view-links a {
+    border-top: 1px solid #e1e0e0;
+    padding: 2rem 0;
+  }
+
+  #mobile-view-logout {
+    border-top: 1px solid #e1e0e0;
+  }
+
+  .box {
+    width: 100%;
+    padding: 5rem 0;
+    border-radius: 1rem;
+  }
+
+  .login,
+  .register {
+    width: 75%;
+    gap: 4rem;
+  }
+
+  .login label,
+  .register label {
+    font-size: 2rem;
+  }
+
+  .login input,
+  .register input,
+  .login select,
+  .register select {
+    height: 4rem;
+    width: 75%;
+  }
+}
+
+@media (max-width: 450px) {
+  .register input,
+  .register select {
+    width: 60%;
+  }
+}
+
+@media (max-width: 300px) {
+  .login input,
+  .login select {
+    width: 65%;
+  }
 }

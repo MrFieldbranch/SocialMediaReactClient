@@ -3,8 +3,8 @@ import { IUserWithSharedInterestsResponse } from "../models/IUserWithSharedInter
 
 const BasicUserSharedInterests = ({ id, firstName, lastName, sharedInterestsCount }: IUserWithSharedInterestsResponse) => {
   return (
-    <Link to={`/user/${id}`} className="basic-user-shared-interests">
-      <div className="separate-data">
+    <Link to={`/user/${id}`}>
+      <div className="separate-data basic-user">
         <p>{`${firstName} ${lastName}`}</p>
         <div className="separate-data-second-variable">
           <p>{sharedInterestsCount}</p>

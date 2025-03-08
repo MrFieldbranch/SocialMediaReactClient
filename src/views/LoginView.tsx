@@ -42,7 +42,7 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
 
   return (
     <div className="box">
-      <div className="login-or-register">
+      <div className="login">
         <h1>LOGGA IN</h1>
         <div>
           <label htmlFor="email">Email:</label>

@@ -125,11 +125,11 @@ const PublicBoardView = () => {
       )}
       {isNewPostMode && (
         <div className="write-new">
-          <div className="label-and-input">
+          <div className="label-and-input-public-board">
             <label htmlFor="title">Titel</label>
             <input type="text" id="title" required onChange={(e) => setNewPostTitle(e.target.value)} />
           </div>
-          <div className="label-and-input">
+          <div className="label-and-input-public-board">
             <label htmlFor="content">Inlägg</label>
             <textarea id="content" required onChange={(e) => setNewPostContent(e.target.value)} />
           </div>

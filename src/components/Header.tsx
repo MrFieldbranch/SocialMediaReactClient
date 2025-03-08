@@ -1,10 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import socialMediaApiService from "../services/social-media-api-service"; /* Singleton */
+import hamburger from "../images/icons8-hamburger-menu-100.png";
+import { useState } from "react";
+import { navLinks } from "../constants/nav-links";
 
 const Header = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
+	setIsMenuOpen(false);
     localStorage.removeItem("authToken");
     localStorage.removeItem("userId");
     socialMediaApiService.removeAuthorizationHeader();
@@ -16,14 +22,31 @@ const Header = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) 
     <nav>
       <h2>Joelbook</h2>
       <div className="nav-links">
-        <Link to="/myprofile">Min profil</Link>
-        <Link to="/myfriends">Mina vänner</Link>
-        <Link to="/strangers">Möjliga vänner</Link>
-        <Link to="/friendrequests">Aktuella vänförfrågningar</Link>
-        <Link to="/interests">Intressen</Link>
-        <Link to="/publicboard">Anslagstavlan</Link>
+        {navLinks.map((link) => (
+          <Link key={link.path} to={link.path}>
+            {link.label}
+          </Link>
+        ))}
       </div>
       <button onClick={handleLogout}>Logga ut</button>
+      {!isMenuOpen && <img src={hamburger} alt="Hamburger menu" onClick={() => setIsMenuOpen(true)} />}
+      {isMenuOpen && (
+        <div className="hamburger-menu-open">
+          <div className="button-to-the-right">
+            <button onClick={() => setIsMenuOpen(false)}>Stäng meny</button>
+          </div>
+          <div className="mobile-view-links">
+            {navLinks.map((link) => (
+              <Link key={link.path} to={link.path} onClick={() => setIsMenuOpen(false)}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="button-to-the-right" id="mobile-view-logout">
+            <button onClick={handleLogout}>Logga ut</button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

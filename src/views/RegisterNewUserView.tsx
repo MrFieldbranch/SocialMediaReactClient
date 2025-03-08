@@ -87,7 +87,7 @@ const RegisterNewUserView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean
 
   return (
     <div className="box">
-      <div className="login-or-register">
+      <div className="register">
         <h1>NY ANVÄNDARE</h1>
         <div>
           <label htmlFor="email">Email:</label>
