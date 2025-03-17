@@ -173,8 +173,8 @@ const UserView = () => {
   };
 
   const handleError = () => {
-	setError(null);
-  }
+    setError(null);
+  };
 
   if (error)
     return (
@@ -189,30 +189,33 @@ const UserView = () => {
   }
 
   return (
-    <div className="user-view">
+    <div className="detailed-user">
       {renderCorrectSubMenu(otherUser.typeOfUser)}
       <h1>ANVÄNDARPROFIL</h1>
-      <div className="sub-section">
+      <div className="detailed-user-name">
         <h2>
           {otherUser.firstName} {otherUser.lastName}, ({otherUser.sex === Sex.Male ? "Man" : "Kvinna"}),{" "}
           {getUserDescription(otherUser.typeOfUser)}
         </h2>
       </div>
-      <div className="sub-section">
-        <h2>Email:</h2>
-        <p>{otherUser.email}</p>
+      <div className="detailed-user-dob-email">
+        <div className="detailed-user-sub-section">
+          <h2>Födelsedatum:</h2>
+          <p>
+            {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age} år)
+          </p>
+        </div>
+        <div className="detailed-user-sub-section">
+          <h2>Email:</h2>
+          <p>{otherUser.email}</p>
+        </div>
       </div>
-      <div className="sub-section">
-        <h2>Födelsedatum:</h2>
-        <p>
-          {new Date(otherUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({otherUser.age} år)
-        </p>
-      </div>
-      <div className="sub-section">
+
+      <div className="detailed-user-sub-section">
         <h2>Intressen:</h2>
         {otherUser.interests.length === 0 ? <p>Inga intressen tillagda än.</p> : <InterestList interests={otherUser.interests} />}
       </div>
-      <div className="sub-section">
+      <div className="detailed-user-sub-section">
         <h2>Om personen:</h2>
         {otherUser.typeOfUser !== TypeOfUser.Friend ? (
           <p>Du är inte vän med denna person så du kan inte se detta stycke.</p>
@@ -220,7 +223,7 @@ const UserView = () => {
           <p>{otherUser.personalInfo || "Inget skrivet än"}</p>
         )}
       </div>
-      <div className="sub-section">
+      <div className="detailed-user-sub-section">
         <h2>Personens vänner:</h2>
         {otherUser.friends.length === 0 ? (
           <p>Inga vänner</p>

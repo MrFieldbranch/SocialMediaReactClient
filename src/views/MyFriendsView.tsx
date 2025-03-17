@@ -49,7 +49,7 @@ const MyFriendsView = () => {
   }
 
   return (
-    <div className="my-friends-view">
+    <div className="my-friends">
       <h1>MINA VÄNNER</h1>
       
       {friends.length === 0 ? (

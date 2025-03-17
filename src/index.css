@@ -10,80 +10,157 @@ html {
 }
 
 body {
-  background-color: #f4f7f8;
-  color: #333;
+  background-color: rgba(248, 214, 185, 0.5);
+  color: #3b3b3b;
   font-family: "Roboto", sans-serif;
 }
 
 .main-container {
+  background-color: #f4efef;
   margin: 0 auto;
-  width: 70%;
-  padding-top: 5rem; /* Same as nav height */
+  width: 80%;
+  min-height: 100vh;
+  padding: 6rem 1rem 1rem 1rem;
+}
+
+button {
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1.6rem;
 }
 
 h1 {
-  font-size: 3rem;
-  margin: 1rem 0;
+  font-size: 2.2rem;
+  margin: 2rem 0;
 }
 
 h2 {
+  font-size: 2rem;
+}
+
+p {
   font-size: 1.6rem;
-  margin: 0.8rem 0;
+}
+
+label {
+  font-size: 1.6rem;
 }
 
 a {
   font-size: 1.6rem;
-  color: #646cff;
+  color: #3b3b3b;
+  color: rgb(139, 117, 96);
   text-decoration: none;
 }
 
 a:hover {
-  color: #535bf2;
+  color: rgb(169, 143, 119);
 }
 
-button {
-  background-color: #646cff;
-  color: #fff;
-  border-radius: 0.5rem;
+textarea {
+  width: 40%;
+  height: 12rem;
   border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  padding: 0.8rem 1.6rem;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  padding: 0.5rem;
+  color: gray;
 }
 
-button:hover {
-  background-color: #535bf2;
-}
-
-.sub-menu {
-  display: flex;
-  align-items: center;
-  height: 4rem;
-}
-
-.sub-menu a,
-.sub-menu button {
-  margin-right: 3rem;
-}
-
-.sub-menu button,
-.start-view button {
-  background: none;
+input,
+select {
   border: none;
-  padding: 0;
-  font: inherit; /* Kanske ändra */
-  color: #646cff;
-  text-decoration: none;
-  cursor: pointer;
-  margin-bottom: 0;
+  height: 3rem;
+  border-radius: 1rem;
+  color: gray;
+  padding: 0.5rem;
   font-size: 1.6rem;
 }
 
-.sub-menu button:hover,
-.start-view button:hover {
-  color: #535bf2;
+a,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: 2px solid rgb(139, 117, 96);
+  /* color: inherit;
+  background-color: inherit; */
+}
+
+.start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+  gap: 3rem;
+}
+
+.start h1 {
+  font-size: 9rem;
+}
+
+.start button {
+  background: none;
+  font-size: 1.8rem;
+}
+
+.start button:hover {
+  background-color: rgba(248, 214, 185, 0.5);
+}
+
+.login-or-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
+.login-or-register h1 {
+  font-size: 2.5rem;
+}
+
+.login-or-register > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 40%;
+}
+
+.login-or-register > div > label {
+  align-self: flex-start;
+}
+
+.login-or-register > div > input,
+.login-or-register > div > select {
+  border: none;
+  height: 4rem;
+  border-radius: 1rem;
+  color: gray;
+  padding-left: 1rem;
+}
+
+.login-or-register button {
+  width: 40%;
+  height: 5rem;
+  border-radius: 1rem;
+  background-color: rgb(139, 117, 96);
+  color: white;
+}
+
+.login-or-register button:hover {
+  background-color: rgb(169, 143, 119);
 }
 
 nav {
@@ -94,174 +171,164 @@ nav {
   width: 100vw;
   height: 5rem;
   display: flex;
-  /* justify-content: space-around; */
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  background-color: #333;
-  color: #fff;
-  padding: 0 8% 0 3%;
-}
-
-nav button {
-  margin: 0;
+  background-color: #f4efef;
+  border-bottom: 1px solid #e1e0e0;
+  padding: 0 3%;
 }
 
 .nav-links {
-  /* margin: 0rem 10rem 0rem 40rem; */
   margin: 0 5% 0 10%;
-  /* min-width: 70rem; */
   width: 55%;
   display: flex;
   justify-content: space-between;
 }
 
-.nav-links a {
-  color: #f4f7f8;
-  font-size: 1.3rem;
+nav button {
+  background-color: rgb(139, 117, 96);
+  color: white;
 }
 
-.nav-links a:hover {
-  color: #c3cbcf;
+nav button:hover {
+  background-color: rgb(169, 143, 119);
 }
 
 nav img {
   display: none;
 }
 
-input,
-textarea,
-select,
-button {
-  font-family: inherit;
-  font-size: 1.5rem;
+.detailed-user-name {
+  padding-bottom: 1.5rem;
 }
 
-select:focus,
-select:focus-visible,
-input:focus,
-input:focus-visible,
-textarea:focus,
-textarea:focus-visible {
-  outline: 2px solid #535bf2;
+.detailed-user-dob-email {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
 }
 
-p {
-  font-size: 1.6rem;
+.detailed-user-sub-section {
+  padding: 2rem 0 2rem 2rem;
+}
+
+.detailed-user-sub-section h2 {
+  margin-bottom: 0.8rem;
+}
+
+.edit-or-write-new-button {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background-color: rgba(185, 243, 248, 0.5);
+}
+
+.edit-or-write-new-button:hover {
+  background-color: rgba(141, 234, 243, 0.5);
+}
+
+.confirm-or-cancel {
+  width: 40%; /* Same as .textarea */
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+}
+
+.confirm {
+  background-color: rgb(215, 243, 215);
+}
+
+.confirm:hover {
+  background-color: rgb(176, 249, 176);
+}
+
+.cancel {
+  background-color: rgb(243, 193, 193);
+}
+
+.cancel:hover {
+  background-color: rgb(247, 163, 163);
+}
+
+.basic-user {
+  margin: 1rem 0 2rem 0;
+}
+
+.sub-menu {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+}
+
+.sub-menu > div {
+  margin-right: 6rem;
+}
+
+.sub-menu button {
+  background: none;
+  padding: 0;
+  color: rgb(139, 117, 96);
+}
+
+.sub-menu button:hover {
+  color: rgb(169, 143, 119);
+}
+
+.sub-section {
+  margin: 2rem 0 4rem 0;
+}
+
+.interests input,
+.public-board input {
+  width: 40%;
+}
+
+.spacing-1 {
+  margin: 2rem 0; /* Behövs denna? */
+}
+
+.mar-bot-1 {
   margin-bottom: 1rem;
 }
 
-.start-view {
-  margin-top: 10vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.bor-bot {
+  border-bottom: 1px solid #e1e0e0;
 }
 
-.start-view h1 {
-  font-size: 10rem;
-  margin: 0 0 3rem 0;
-}
-
-.start-view-choices {
-  width: 22rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.box {
-  margin: auto;
-  margin-top: 1rem;
-  width: 55vw;
-  padding: 5rem 0;
-  border: 2px solid #e1e0e0;
-  border-radius: 2rem;
-  background-color: rgba(211, 211, 211, 0.3);
-}
-
-.login,
-.register {
-  margin: auto;
-  width: 30rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.login div,
-.register div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.login h1,
-.register h1 {
-  margin: auto;
-}
-
-.login label,
-.register label {
-  font-size: 1.5rem;
-}
-
-.login input,
-.register input,
-.login select,
-.register select {
-  height: 2.5rem;
-  border: none;
-  border-radius: 0.4rem;
-}
-
-input {
-  min-width: 19rem;
-  margin-left: 1rem;
-}
-
-select {
-  min-width: 19rem;
-}
-
-.wrap-container {
+.item-container {
   display: flex;
   flex-wrap: wrap;
+  gap: 1.2rem;
 }
 
 .item {
   display: flex;
   align-items: center;
-  background-color: #cce5ff;
+  background-color: rgb(139, 117, 96);
+  color: white;
   border-radius: 0.5rem;
-  font-size: 2rem;
   padding: 0.5rem 1rem;
-  margin: 0rem 2rem 2rem 0rem;
-}
-
-.item p {
-  margin-bottom: 0;
 }
 
 .item button {
-  background-color: inherit; /* Default background */ /* Kanske ta bort */
-  transition: background-color 0.2s ease-in-out; /* Smooth effect */
-  font-size: 0.8rem;
-  color: #333;
+  background-color: inherit;
+  font-size: 1rem;
+  color: white;
   margin-bottom: 0;
   margin-left: 1rem;
 }
 
 .item button:hover {
   background-color: var(--hover-bg-color);
+  color: #3b3b3b;
 }
 
-.sub-section {
-  min-height: 5rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid #e1e0e0;
+.mar-top-1 {
+  margin-top: 1rem;
 }
 
 .separate-data {
+  margin-top: 1rem;
   width: 50rem;
   display: flex;
   justify-content: space-between;
@@ -274,8 +341,15 @@ select {
   align-items: center;
 }
 
-.basic-user {
-  margin: 2.5rem 0;
+.label-and-input-public-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.label-and-input-public-board label {
+  padding-left: 0.5rem;
 }
 
 .message-list {
@@ -285,59 +359,24 @@ select {
 }
 
 .message {
-  max-width: 40%;
-  padding: 1rem 1rem 0 1rem;
-  /* padding: 1rem; */
-  border-radius: 0.8rem;
+  max-width: 50%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .message-left {
   align-self: flex-start;
-  background-color: #eee;
+  background-color: #e4d9d9;
+  margin-top: 1.5rem;
 }
 
 .message-right {
   align-self: flex-end;
-  background-color: #cce5ff;
-}
-
-.conversation-view textarea {
-  width: 40rem;
-  height: 12rem;
-}
-
-.confirm-or-cancel {
-  width: 40rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.public-board-view textarea {
-  width: 40rem;
-  height: 12rem;
-}
-
-.public-board-view input {
-  width: 40rem;
-  margin: 0;
-}
-
-.interests-view input {
-  width: 40rem;
-  height: 3rem;
-  margin: 0 0 0.7rem 0;
-}
-
-.label-and-input-public-board {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.7rem;
-}
-
-.my-profile-view textarea {
-  width: 40rem;
-  height: 12rem;
+  background-color: #e3e8e4;
 }
 
 .error-message {
@@ -346,62 +385,75 @@ select {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 5rem;
 }
 
-.write-new {
-  margin-top: 2rem;
+.error-message button {
+	background-color: rgb(139, 117, 96);
 }
 
 .hamburger-menu-open {
   display: none;
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1500px) {
+  .nav-links {
+    width: 65%;
+  }
+
+  textarea {
+    width: 60%;
+  }
+
+  .confirm-or-cancel {
+    width: 60%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .nav-links {
+    margin: 0 5%;
+    width: 70%;
+  }
+
+  .main-container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1050px) {
+  html {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 950px) {
   html {
     font-size: 8px;
   }
 
-  .login,
-  .register {
+  .login-or-register > div,
+  .login-or-register button {
     width: 60%;
   }
 
-  .login input,
-  .login select,
-  .register input,
-  .register select {
-    width: 70%;
+  .message {
+    max-width: 60%;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   html {
-    font-size: 6px;
+    font-size: 10px;
   }
 
-  .main-container {
-    width: 80%;
+  .start h1 {
+    font-size: 7rem;
   }
 
-  .login label,
-  .register label {
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 700px) {
-  html {
-    font-size: 5px;
-  }
-
-  .main-container {
-    width: 85%;
-  }
-}
-
-@media (max-width: 550px) {
-  .main-container {
-    width: 90%;
+  .login-or-register > div,
+  .login-or-register button {
+    width: 75%;
   }
 
   .nav-links {
@@ -421,35 +473,46 @@ select {
     cursor: pointer;
   }
 
+  .message {
+    max-width: 80%;
+  }
+
+  .message p {
+    font-size: 1.4rem;
+  }
+
+  .message h2 {
+    font-size: 1.5rem;
+  }
+
   .hamburger-menu-open {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #f4f7f8;
+    background-color: #f4efef;
     display: flex;
     flex-direction: column;
     z-index: 2000;
     padding: 0 3rem;
   }
 
-  .hamburger-menu-open a {
-    color: #333;
-    font-size: 3rem;
-  }
-
-  .button-to-the-right {
+  .button-to-the-right-hamburger {
     display: flex;
     justify-content: flex-end;
     padding: 2rem 0;
   }
 
-  .button-to-the-right button {
+  .button-to-the-right-hamburger button {
     background-color: inherit;
     color: #333;
-    font-size: 3rem;
+    font-size: 2rem;
     padding-right: 0;
+  }
+
+  .button-to-the-right-hamburger button:hover {
+    background-color: inherit;
   }
 
   .mobile-view-links {
@@ -459,6 +522,8 @@ select {
   }
 
   .mobile-view-links a {
+    color: #333;
+    font-size: 2rem;
     border-top: 1px solid #e1e0e0;
     padding: 2rem 0;
   }
@@ -467,42 +532,83 @@ select {
     border-top: 1px solid #e1e0e0;
   }
 
-  .box {
+  .detailed-user-dob-email {
+    width: 85%;
+  }
+}
+
+@media (max-width: 600px) {
+  .separate-data {
+    width: 45rem;
+  }
+}
+
+@media (max-width: 520px) {
+  html {
+    font-size: 9px;
+  }
+
+  .main-container {
     width: 100%;
-    padding: 5rem 0;
-    border-radius: 1rem;
   }
 
-  .login,
-  .register {
-    width: 75%;
-    gap: 4rem;
+  .detailed-user-dob-email {
+    display: flex;
+    flex-direction: column;
   }
 
-  .login label,
-  .register label {
+  .sub-menu button,
+  .sub-menu a {
+    font-size: 1.5rem;
+  }
+
+  .sub-menu > div {
+    margin-right: 8rem;
+  }
+
+  .message {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 440px) {
+  .detailed-user-sub-section {
+    padding: 2rem 0;
+  }
+
+  .sub-menu button,
+  .sub-menu a {
+    font-size: 1.1rem;
+  }
+
+  .sub-menu > div {
+    margin-right: 3rem;
+  }
+
+  .message p {
+    font-size: 1.3rem;
+  }
+
+  .message h2 {
+    font-size: 1.4rem;
+  }
+
+  .strangers h1,
+  .all-friend-requests h1 {
     font-size: 2rem;
   }
 
-  .login input,
-  .register input,
-  .login select,
-  .register select {
-    height: 4rem;
-    width: 75%;
+  .strangers h2,
+  .all-friend-requests h2 {
+    font-size: 1.8rem;
   }
-}
 
-@media (max-width: 450px) {
-  .register input,
-  .register select {
-    width: 60%;
+  .strangers p,
+  .all-friend-requests p {
+    font-size: 1.4rem;
   }
-}
 
-@media (max-width: 300px) {
-  .login input,
-  .login select {
-    width: 65%;
+  .separate-data {
+    width: 35rem;
   }
 }

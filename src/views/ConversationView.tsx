@@ -96,7 +96,7 @@ const ConversationView = () => {
   }
 
   return (
-    <div className="conversation-view">
+    <div className="conversation">
       <h1>KONVERSATION</h1>
       <h2>
         Mellan dig och {firstName} {lastName}
@@ -123,24 +123,23 @@ const ConversationView = () => {
       )}
 
       {!isNewMessageMode && (
-        <div>
-          <button className="write-new" onClick={handleOpenMessageBox}>
+        <div className="spacing-1">
+          <button className="edit-or-write-new-button" onClick={handleOpenMessageBox}>
             Skriv nytt meddelande
           </button>
         </div>
       )}
       {isNewMessageMode && (
-        <div className="write-new">
+        <div className="spacing-1">
           <textarea required onChange={(e) => setNewMessage(e.target.value)} />
           <div className="confirm-or-cancel">
-            <button onClick={() => handleSendMessage(newMessage)}>Skicka</button>
-            <button onClick={() => setIsNewMessageMode(false)}>Avbryt</button>
+            <button className="confirm" onClick={() => handleSendMessage(newMessage)}>Skicka</button>
+            <button className="cancel" onClick={() => setIsNewMessageMode(false)}>Avbryt</button>
           </div>
         </div>
       )}
-	  <div ref={endOfPageRef} />
+      <div ref={endOfPageRef} />
     </div>
-	
   );
 };
 

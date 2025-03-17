@@ -84,9 +84,9 @@ const InterestsView = () => {
   };
 
   const handleError = () => {
-	setNewInterest("");
-	setError(null);
-  }
+    setNewInterest("");
+    setError(null);
+  };
 
   if (error)
     return (
@@ -102,7 +102,7 @@ const InterestsView = () => {
 
   if (location.pathname === "/interests")
     return (
-      <div className="interests-view">
+      <div className="interests">
         <SubMenu
           items={[
             {
@@ -116,20 +116,23 @@ const InterestsView = () => {
           ]}
         />
         <h1>ALLA INTRESSEN</h1>
-        {interests.length === 0 ? (
-          <p>Inga intressen finns än. Lägg gärna till ett!</p>
-        ) : (
-          <div>
-            <InterestList interests={interests} />
-          </div>
-        )}
-        {!isNewInterestMode && <button onClick={() => setIsNewInterestMode(true)}>Skapa ett intresse</button>}
+        <div className="spacing-1">
+          {interests.length === 0 ? (
+            <p>Inga intressen finns än. Lägg gärna till ett!</p>
+          ) : (
+            <div>
+              <InterestList interests={interests} />
+            </div>
+          )}
+        </div>
+
+        {!isNewInterestMode && <button className="edit-or-write-new-button" onClick={() => setIsNewInterestMode(true)}>Skapa ett intresse</button>}
         {isNewInterestMode && (
-          <div className="write-new">
+          <div>
             <input type="text" required onChange={(e) => setNewInterest(e.target.value)} />
             <div className="confirm-or-cancel">
-              <button onClick={() => handleCreateNewInterest(newInterest)}>Spara</button>
-              <button onClick={() => setIsNewInterestMode(false)}>Avbryt</button>
+              <button className="confirm" onClick={() => handleCreateNewInterest(newInterest)}>Spara</button>
+              <button className="cancel" onClick={() => setIsNewInterestMode(false)}>Avbryt</button>
             </div>
           </div>
         )}
@@ -138,7 +141,7 @@ const InterestsView = () => {
 
   if (location.pathname === "/interests/myinterests")
     return (
-      <div className="interests-view">
+      <div className="interests">
         <SubMenu
           items={[
             {
@@ -152,17 +155,19 @@ const InterestsView = () => {
           ]}
         />
         <h1>MINA INTRESSEN</h1>
-        {interests.length === 0 ? (
-          <p>Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
-        ) : (
-          <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="#E74C3C" />
-        )}
+        <div className="spacing-1">
+          {interests.length === 0 ? (
+            <p>Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
+          ) : (
+            <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="rgb(247, 163, 163)" />
+          )}
+        </div>
       </div>
     );
 
   if (location.pathname === "/interests/notmyinterests")
     return (
-      <div className="interests-view">
+      <div className="interests">
         <SubMenu
           items={[
             {
@@ -176,11 +181,13 @@ const InterestsView = () => {
           ]}
         />
         <h1>INTRESSEN SOM JAG INTE HAR</h1>
-        {interests.length === 0 ? (
-          <p>Det finns inga intressen i systemet som du inte redan har.</p>
-        ) : (
-          <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="#4CAF50" />
-        )}
+        <div className="spacing-1">
+          {interests.length === 0 ? (
+            <p>Det finns inga intressen i systemet som du inte redan har.</p>
+          ) : (
+            <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="rgb(215, 243, 215)" />
+          )}
+        </div>
       </div>
     );
 };

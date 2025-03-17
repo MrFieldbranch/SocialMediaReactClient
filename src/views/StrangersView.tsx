@@ -65,7 +65,7 @@ const StrangersView = () => {
 
   if (location.pathname === "/strangers")
     return (
-      <div className="strangers-view">
+      <div className="strangers">
         <SubMenu
           items={[
             {
@@ -88,11 +88,11 @@ const StrangersView = () => {
 
   if (location.pathname === "/strangers/sorted")
     return (
-      <div className="strangers-sorted-view">
+      <div className="strangers">
         <SubMenu items={[{ label: "Gå tillbaka till osorterad vy", linkTo: "/strangers" }]} />
         <h1>MÖJLIGA VÄNNER</h1>
         {strangersSorted.length === 0 ? (
-          <p>Det finns inga andra användare som har något intresse gemensamt med dig</p>
+          <p className="mar-top-1">Det finns inga andra användare som har något intresse gemensamt med dig</p>
         ) : (
           <>
             <div className="separate-data">

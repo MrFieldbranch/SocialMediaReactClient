@@ -54,7 +54,7 @@ const AllFriendRequestsView = () => {
   }
 
   return (
-    <div className="all-friend-requests-view">
+    <div className="all-friend-requests">
       <h1>VÄNFÖRFRÅGNINGAR</h1>
 
       <section className="sub-section">
@@ -66,7 +66,9 @@ const AllFriendRequestsView = () => {
           <>
             <div className="separate-data">
               <p>Namn</p>
-              <p>Skickat</p>
+              <div className="separate-data-second-variable">
+                <p>Skickat</p>
+              </div>
             </div>
             {pendingToMe.map((user: IPendingFriendResponse) => (
               <BasicUserFriendRequest
@@ -90,7 +92,9 @@ const AllFriendRequestsView = () => {
           <>
             <div className="separate-data">
               <p>Namn</p>
-              <p>Skickat</p>
+              <div className="separate-data-second-variable">
+                <p>Skickat</p>
+              </div>
             </div>
             {pendingFromMe.map((user: IPendingFriendResponse) => (
               <BasicUserFriendRequest

@@ -9,14 +9,14 @@ const BasicUserFriendRequest = ({ id, firstName, lastName, requestedAt }: IPendi
     <Link to={`/user/${id}`}>
       <div className="separate-data basic-user">
         <p>{`${firstName} ${lastName}`}</p>
-        <p>
-          {`${requestDate.toLocaleDateString(
-            "sv-SE"
-          )}, klockan ${requestDate.toLocaleTimeString("sv-SE", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}`}
-        </p>
+        <div className="separate-data-second-variable">
+          <p>
+            {`${requestDate.toLocaleDateString("sv-SE")}, klockan ${requestDate.toLocaleTimeString("sv-SE", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}`}
+          </p>
+        </div>
       </div>
     </Link>
   );

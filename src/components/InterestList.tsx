@@ -3,7 +3,7 @@ import Interest from "./Interest";
 
 const InterestList = ({ interests, onButtonClick, buttonText, color }: InterestListProps) => {
   return (
-    <div className="wrap-container">
+    <div className="item-container">
       {interests.map((interest) => (
         <Interest
           key={interest.id}

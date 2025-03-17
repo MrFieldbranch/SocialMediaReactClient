@@ -59,9 +59,9 @@ const MyProfileView = () => {
   };
 
   const handleError = () => {
-	setNewText(myUser.personalInfo ?? "");
-	setError(null);
-  }
+    setNewText(myUser.personalInfo ?? "");
+    setError(null);
+  };
 
   if (error)
     return (
@@ -76,30 +76,32 @@ const MyProfileView = () => {
   }
 
   return (
-    <div className="my-profile-view">
+    <div className="detailed-user">
       <h1>MIN PROFIL</h1>
-      <div className="sub-section">
+      <div className="detailed-user-name">
         <h2>
           {myUser.firstName} {myUser.lastName}, ({myUser.sex === Sex.Male ? "Man" : "Kvinna"})
         </h2>
       </div>
+      <div className="detailed-user-dob-email">
+        <div className="detailed-user-sub-section">
+          <h2>Födelsedatum:</h2>
+          <p>
+            {new Date(myUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({myUser.age} år)
+          </p>
+        </div>
+        <div className="detailed-user-sub-section">
+          <h2>Email:</h2>
+          <p>{myUser.email}</p>
+        </div>
+      </div>
 
-      <div className="sub-section">
-        <h2>Email:</h2>
-        <p>{myUser.email}</p>
-      </div>
-      <div className="sub-section">
-        <h2>Födelsedatum:</h2>
-        <p>
-          {new Date(myUser.dateOfBirth).toLocaleDateString("sv-SE")}, ({myUser.age} år)
-        </p>
-      </div>
-      <div className="sub-section">
+      <div className="detailed-user-sub-section">
         <h2>Mina intressen:</h2>
         {myUser.interests.length === 0 ? <p>Inga intressen tillagda än.</p> : <InterestList interests={myUser.interests} />}
       </div>
 
-      <div className="sub-section">
+      <div className="detailed-user-sub-section">
         <h2>Om mig:</h2>
 
         {!isEditMode && (
@@ -109,15 +111,21 @@ const MyProfileView = () => {
             ) : (
               <p>{myUser.personalInfo}</p>
             )}
-            <button onClick={() => handleEditMode()}>Redigera</button>
+            <button className="edit-or-write-new-button" onClick={() => handleEditMode()}>
+              Redigera
+            </button>
           </div>
         )}
         {isEditMode && (
           <div>
-            <textarea value={newText} rows={5} onChange={(e) => setNewText(e.target.value)} />
+            <textarea value={newText} onChange={(e) => setNewText(e.target.value)} />
             <div className="confirm-or-cancel">
-              <button onClick={() => handleSavePersonalInfo(newText)}>Spara</button>
-              <button onClick={() => setIsEditMode(false)}>Avbryt</button>
+              <button className="confirm" onClick={() => handleSavePersonalInfo(newText)}>
+                Spara
+              </button>
+              <button className="cancel" onClick={() => setIsEditMode(false)}>
+                Avbryt
+              </button>
             </div>
           </div>
         )}
