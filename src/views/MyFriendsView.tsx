@@ -51,17 +51,13 @@ const MyFriendsView = () => {
   return (
     <div className="my-friends">
       <h1>MINA VÄNNER</h1>
-      
+
       {friends.length === 0 ? (
-        <p>Du har inga vänner än. Gå till "Möjliga vänner" och skicka vänförfrågningar.</p>
+        <p className="mar-top-1">Du har inga vänner än. Gå till "Möjliga vänner" och skicka vänförfrågningar.</p>
       ) : (
-        friends.map((friend: IBasicUserResponse) => 
-			<BasicUser	
-				key={friend.id} 
-				id={friend.id} 
-				firstName={friend.firstName} 
-				lastName={friend.lastName} 
-			/>)
+        friends.map((friend: IBasicUserResponse) => (
+          <BasicUser key={friend.id} id={friend.id} firstName={friend.firstName} lastName={friend.lastName} />
+        ))
       )}
     </div>
   );

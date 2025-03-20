@@ -103,7 +103,7 @@ const ConversationView = () => {
       </h2>
 
       {conversation === null ? (
-        <p>Inga meddelanden än.</p>
+        <p className="mar-top-1">Inga meddelanden än.</p>
       ) : (
         <div className="message-list">
           {conversation.messages.map((message: IMessageResponse) => (
@@ -123,18 +123,22 @@ const ConversationView = () => {
       )}
 
       {!isNewMessageMode && (
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           <button className="edit-or-write-new-button" onClick={handleOpenMessageBox}>
             Skriv nytt meddelande
           </button>
         </div>
       )}
       {isNewMessageMode && (
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           <textarea required onChange={(e) => setNewMessage(e.target.value)} />
           <div className="confirm-or-cancel">
-            <button className="confirm" onClick={() => handleSendMessage(newMessage)}>Skicka</button>
-            <button className="cancel" onClick={() => setIsNewMessageMode(false)}>Avbryt</button>
+            <button className="confirm" onClick={() => handleSendMessage(newMessage)}>
+              Skicka
+            </button>
+            <button className="cancel" onClick={() => setIsNewMessageMode(false)}>
+              Avbryt
+            </button>
           </div>
         </div>
       )}

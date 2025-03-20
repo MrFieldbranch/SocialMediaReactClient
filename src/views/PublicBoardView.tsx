@@ -96,7 +96,7 @@ const PublicBoardView = () => {
     <div className="public-board">
       <h1>ANSLAGSTAVLAN</h1>
       {allPosts.length === 0 ? (
-        <p>Inga inlägg finns än. Skriv gärna ett!</p>
+        <p className="mar-top-1">Inga inlägg finns än. Skriv gärna ett!</p>
       ) : (
         <div className="message-list">
           {allPosts.map((post: IPostToPublicBoardResponse) => (
@@ -117,14 +117,14 @@ const PublicBoardView = () => {
       )}
 
       {!isNewPostMode && (
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           <button className="edit-or-write-new-button" onClick={handleOpenMessageBox}>
             Skriv ett inlägg
           </button>
         </div>
       )}
       {isNewPostMode && (
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           <div className="label-and-input-public-board">
             <label htmlFor="title">Titel</label>
             <input type="text" id="title" required onChange={(e) => setNewPostTitle(e.target.value)} />
@@ -134,8 +134,12 @@ const PublicBoardView = () => {
             <textarea id="content" required onChange={(e) => setNewPostContent(e.target.value)} />
           </div>
           <div className="confirm-or-cancel">
-            <button className="confirm" onClick={() => handleSendPost(newPostTitle, newPostContent)}>Skicka</button>
-            <button className="cancel" onClick={() => setIsNewPostMode(false)}>Avbryt</button>
+            <button className="confirm" onClick={() => handleSendPost(newPostTitle, newPostContent)}>
+              Skicka
+            </button>
+            <button className="cancel" onClick={() => setIsNewPostMode(false)}>
+              Avbryt
+            </button>
           </div>
         </div>
       )}

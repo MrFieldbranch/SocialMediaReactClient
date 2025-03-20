@@ -116,9 +116,9 @@ const InterestsView = () => {
           ]}
         />
         <h1>ALLA INTRESSEN</h1>
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           {interests.length === 0 ? (
-            <p>Inga intressen finns än. Lägg gärna till ett!</p>
+            <p className="mar-top-1">Inga intressen finns än. Lägg gärna till ett!</p>
           ) : (
             <div>
               <InterestList interests={interests} />
@@ -126,13 +126,21 @@ const InterestsView = () => {
           )}
         </div>
 
-        {!isNewInterestMode && <button className="edit-or-write-new-button" onClick={() => setIsNewInterestMode(true)}>Skapa ett intresse</button>}
+        {!isNewInterestMode && (
+          <button className="edit-or-write-new-button" onClick={() => setIsNewInterestMode(true)}>
+            Skapa ett intresse
+          </button>
+        )}
         {isNewInterestMode && (
           <div>
             <input type="text" required onChange={(e) => setNewInterest(e.target.value)} />
             <div className="confirm-or-cancel">
-              <button className="confirm" onClick={() => handleCreateNewInterest(newInterest)}>Spara</button>
-              <button className="cancel" onClick={() => setIsNewInterestMode(false)}>Avbryt</button>
+              <button className="confirm" onClick={() => handleCreateNewInterest(newInterest)}>
+                Spara
+              </button>
+              <button className="cancel" onClick={() => setIsNewInterestMode(false)}>
+                Avbryt
+              </button>
             </div>
           </div>
         )}
@@ -155,11 +163,11 @@ const InterestsView = () => {
           ]}
         />
         <h1>MINA INTRESSEN</h1>
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           {interests.length === 0 ? (
-            <p>Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
+            <p className="mar-top-1">Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
           ) : (
-            <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="rgb(247, 163, 163)" />
+            <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="rgb(243, 193, 193)" />
           )}
         </div>
       </div>
@@ -181,9 +189,9 @@ const InterestsView = () => {
           ]}
         />
         <h1>INTRESSEN SOM JAG INTE HAR</h1>
-        <div className="spacing-1">
+        <div className="vertical-spacing">
           {interests.length === 0 ? (
-            <p>Det finns inga intressen i systemet som du inte redan har.</p>
+            <p className="mar-top-1">Det finns inga intressen i systemet som du inte redan har.</p>
           ) : (
             <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="rgb(215, 243, 215)" />
           )}

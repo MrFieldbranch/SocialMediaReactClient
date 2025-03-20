@@ -29,7 +29,7 @@ const Header = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) 
         ))}
       </div>
       <button onClick={handleLogout}>Logga ut</button>
-      {!isHamburgerMenuOpen && <img src={hamburger} alt="Hamburger menu" onClick={() => setIsHamburgerMenuOpen(true)} />}
+      {!isHamburgerMenuOpen && <img src={hamburger} alt="Picture of hamburger menu" onClick={() => setIsHamburgerMenuOpen(true)} />}
       {isHamburgerMenuOpen && (
         <div className="hamburger-menu-open">
           <div className="button-to-the-right-hamburger">

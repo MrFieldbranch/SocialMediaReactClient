@@ -77,7 +77,9 @@ const StrangersView = () => {
         <h1>MÖJLIGA VÄNNER</h1>
 
         {strangers.length === 0 ? (
-          <p>Det finns inga användare i communityn som inte redan är i din vänlista, eller som inte redan ingår i en vänförfrågan.</p>
+          <p className="mar-top-1">
+            Det finns inga användare i communityn som inte redan är i din vänlista, eller som inte redan ingår i en vänförfrågan.
+          </p>
         ) : (
           strangers.map((stranger: IBasicUserResponse) => (
             <BasicUser key={stranger.id} id={stranger.id} firstName={stranger.firstName} lastName={stranger.lastName} />

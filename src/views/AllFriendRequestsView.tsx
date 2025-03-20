@@ -61,7 +61,7 @@ const AllFriendRequestsView = () => {
         <h2>{`Till mig (${pendingToMe.length})`}</h2>
 
         {pendingToMe.length === 0 ? (
-          <p>Det finns inga aktuella vänförfrågningar till dig</p>
+          <p className="mar-top-1">Det finns inga aktuella vänförfrågningar till dig</p>
         ) : (
           <>
             <div className="separate-data">
@@ -87,7 +87,7 @@ const AllFriendRequestsView = () => {
         <h2>{`Som jag har skickat (${pendingFromMe.length})`}</h2>
 
         {pendingFromMe.length === 0 ? (
-          <p>Det finns inga aktuella vänförfrågningar från dig</p>
+          <p className="mar-top-1">Det finns inga aktuella vänförfrågningar från dig</p>
         ) : (
           <>
             <div className="separate-data">

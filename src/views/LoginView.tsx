@@ -41,17 +41,19 @@ const LoginView = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
     );
 
   return (
-    <div className="login-or-register">
-      <h1>LOGGA IN</h1>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input type="email" autoComplete="off" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <div className="login-or-register-background">
+      <div className="login-or-register">
+        <h1>LOGGA IN</h1>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input type="email" autoComplete="off" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div>
+          <label htmlFor="password">Lösenord:</label>
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+        <button onClick={() => handleLogin(email, password)}>Logga in</button>
       </div>
-      <div>
-        <label htmlFor="password">Lösenord:</label>
-        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      </div>
-      <button onClick={() => handleLogin(email, password)}>Logga in</button>
     </div>
   );
 };
