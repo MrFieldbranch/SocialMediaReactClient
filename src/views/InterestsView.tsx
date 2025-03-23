@@ -107,11 +107,11 @@ const InterestsView = () => {
           items={[
             {
               label: "Mina intressen",
-              linkTo: "/interests/myinterests",
+              linkTo: "/interests/myinterests",              
             },
             {
               label: "Välj bland intressen som jag inte har",
-              linkTo: "/interests/notmyinterests",
+              linkTo: "/interests/notmyinterests",              
             },
           ]}
         />
@@ -167,7 +167,13 @@ const InterestsView = () => {
           {interests.length === 0 ? (
             <p className="mar-top-1">Du har inte lagt till några intressen än. Gör gärna det bland "Intressen som jag inte har".</p>
           ) : (
-            <InterestList interests={interests} onButtonClick={handleRemoveInterest} buttonText="Ta bort" color="rgb(243, 193, 193)" />
+            <InterestList
+              interests={interests}
+              onButtonClick={handleRemoveInterest}
+              buttonText="Ta bort"
+              color="rgb(212, 19, 19)"
+              hoverColor="rgb(180, 14, 14)"
+            />
           )}
         </div>
       </div>
@@ -193,7 +199,13 @@ const InterestsView = () => {
           {interests.length === 0 ? (
             <p className="mar-top-1">Det finns inga intressen i systemet som du inte redan har.</p>
           ) : (
-            <InterestList interests={interests} onButtonClick={handleAddInterest} buttonText="Lägg till" color="rgb(215, 243, 215)" />
+            <InterestList
+              interests={interests}
+              onButtonClick={handleAddInterest}
+              buttonText="Lägg till"
+              color="rgb(66, 149, 66)"
+              hoverColor="rgb(18, 123, 18)"
+            />
           )}
         </div>
       </div>

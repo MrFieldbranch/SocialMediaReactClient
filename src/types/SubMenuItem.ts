@@ -3,4 +3,6 @@ export type SubMenuItem = {
         onClick?: () => void;   
         linkTo?: string;        
 		optionalProps?: Record<string, string>;
+		color?: string;
+		hoverColor?: string;
 }

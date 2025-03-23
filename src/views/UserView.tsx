@@ -73,6 +73,8 @@ const UserView = () => {
             {
               label: "Säg upp vänskapen",
               onClick: () => endFriendship(otherUserId),
+              color: "rgb(212, 19, 19)",
+              hoverColor: "rgb(180, 14, 14)",
             },
           ]}
         />
@@ -84,6 +86,8 @@ const UserView = () => {
             {
               label: "Skicka en vänförfrågan",
               onClick: () => sendFriendRequest(otherUserId),
+              color: "rgb(66, 149, 66)",
+              hoverColor: "rgb(18, 123, 18)",
             },
           ]}
         />
@@ -95,10 +99,14 @@ const UserView = () => {
             {
               label: "Acceptera vänförfrågan",
               onClick: () => acceptFriendRequest(otherUserId),
+              color: "rgb(66, 149, 66)",
+              hoverColor: "rgb(18, 123, 18)",
             },
             {
               label: "Neka vänförfrågan",
               onClick: () => declineFriendRequest(otherUserId),
+              color: "rgb(212, 19, 19)",
+              hoverColor: "rgb(180, 14, 14)",
             },
           ]}
         />
@@ -110,6 +118,8 @@ const UserView = () => {
             {
               label: "Ta tillbaka vänförfrågan",
               onClick: () => withdrawFriendRequest(otherUserId),
+              color: "rgb(212, 19, 19)",
+              hoverColor: "rgb(180, 14, 14)",
             },
           ]}
         />

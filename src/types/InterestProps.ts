@@ -3,5 +3,6 @@ export type InterestProps = {
 	name: string;
 	onButtonClick?: (id: number) => void;
 	color?: string;
+	hoverColor?: string;
 	buttonText?: string;
 }

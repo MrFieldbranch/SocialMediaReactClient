@@ -48,8 +48,8 @@ const StrangersView = () => {
   }, [location.pathname]);
 
   const handleError = () => {
-	setError(null);
-  }
+    setError(null);
+  };
 
   if (error)
     return (

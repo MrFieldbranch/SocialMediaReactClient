@@ -1,7 +1,7 @@
 import { InterestListProps } from "../types/InterestListProps";
 import Interest from "./Interest";
 
-const InterestList = ({ interests, onButtonClick, buttonText, color }: InterestListProps) => {
+const InterestList = ({ interests, onButtonClick, buttonText, color, hoverColor }: InterestListProps) => {
   return (
     <div className="item-container">
       {interests.map((interest) => (
@@ -11,6 +11,7 @@ const InterestList = ({ interests, onButtonClick, buttonText, color }: InterestL
           name={interest.name}
           onButtonClick={onButtonClick}
           color={color}
+		  hoverColor={hoverColor}
           buttonText={buttonText}
         />
       ))}
@@ -19,25 +20,3 @@ const InterestList = ({ interests, onButtonClick, buttonText, color }: InterestL
 };
 
 export default InterestList;
-
-
-/* const InterestList = ({ interests, onButtonClick, addOrRemove, color }: InterestListProps) => {
-  return (
-    <div className="interest-list">
-      {interests.map((interest) => (
-        <li key={interest.id}>
-          {interest.name}
-          {onButtonClick && (
-            <button
-              onClick={() => onButtonClick(interest.id)}
-              className="button-hover"
-              style={{ "--hover-bg-color": color } as React.CSSProperties}
-            >
-              {addOrRemove}
-            </button>
-          )}
-        </li>
-      ))}
-    </div>
-  );
-}; */

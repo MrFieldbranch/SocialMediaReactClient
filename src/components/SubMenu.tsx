@@ -6,17 +6,20 @@ const SubMenu = ({ items }: ISubMenuProps) => {
     <section className="sub-menu">
       {items.map((item, index) => (
         <div key={index}>
-			{item.linkTo ? (
-              <Link to={item.linkTo} state={item.optionalProps}>
-                {item.label}
-              </Link>
-            ) : (
-          <button onClick={item.onClick}>             
-              {item.label}            
-          </button>)}
+          {item.linkTo ? (
+            <Link to={item.linkTo} state={item.optionalProps}>
+              {item.label}
+            </Link>
+          ) : (
+            <button
+              onClick={item.onClick}
+              style={{ "--bg-color-sub-menu": item.color, "--hover-bg-color-sub-menu": item.hoverColor } as React.CSSProperties}
+            >
+              {item.label}
+            </button>
+          )}
         </div>
-		))
-	   }      
+      ))}
     </section>
   );
 };
